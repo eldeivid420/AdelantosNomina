@@ -3,6 +3,7 @@ from json import load
 import hashlib
 import jwt
 import os
+import datetime
 
 class Operador:
 
@@ -30,25 +31,31 @@ class Operador:
         else:
             self.nombre = params['nombre']
             self.username = params['username'].rstrip()
-            h = hashlib.sha256(params['passWORD'].encode('utf-8')).hexdigest()
+            h = hashlib.sha256(params['password'].encode('utf-8')).hexdigest()
             self.password = h
             self.id = post('''INSERT INTO operadores (username,password,nombre) VALUES (%s,%s,%s) RETURNING id''',(self.username,self.password,self.nombre), False)
-        return f'El usuario: {self.username} se registró exitosamente con el id: {self.id}'
 
     def load(self, params):
         exist = self.exist(params)
+        print(exist)
         if not exist:
             raise Exception('El usuario no está registrado')
         else:
-            self.username = params['username']
+            self.id = exist[0]
+            self.nombre = exist[1]
+            self.username = exist[2]
+            self.password = exist[3]
+            self.creado_en = exist[4]
+            self.editado_en = exist[5]
             h = hashlib.sha256(params['password'].encode('utf-8')).hexdigest()
-            if exist[1] != h:
+            if exist[3] != h:
                 raise Exception('Contraseña incorrecta')
             else:
-
                 token = os.environ.get('JWT_TOKEN')
+                timestamp = datetime.datetime.now()
                 web_token = jwt.encode({
-                    "id": self.id
+                    "id": self.id,
+                    "timestamp": str(timestamp)
                 },
                     token,
                     algorithm='HS256'

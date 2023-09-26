@@ -29,9 +29,11 @@ def enviar_mensaje(content_sid):
 # Blueprints
 from Global.Routes.Incoming import GLOBAL_INCOMING_BLUEPRINT
 from Global.Routes.Auth import GLOBAL_AUTH_BLUEPRINT
+from Global.Routes.Gerente import GLOBAL_GERENTE_BLUEPRINT
 
 application.register_blueprint(GLOBAL_INCOMING_BLUEPRINT, url_prefix='/incoming')
 application.register_blueprint(GLOBAL_AUTH_BLUEPRINT, url_prefix='/auth')
+application.register_blueprint(GLOBAL_GERENTE_BLUEPRINT, url_prefix='/gerente')
 
 '''from Global.Routes.Inicio import GLOBAL_INICIO_BLUEPRINT
 application.register_blueprint(GLOBAL_INICIO_BLUEPRINT, url_prefix='/inicio')'''

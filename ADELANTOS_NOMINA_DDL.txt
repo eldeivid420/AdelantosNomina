@@ -1,0 +1,117 @@
+create type estatus_adelanto as enum('creado', 'pagado', 'entregado', 'cancelado');
+create type tipo_ticket as enum('queja', 'sugerencia', 'otro');
+create type tipo_contacto as enum('telefono','correo');
+create type tipo_usuario as enum('gerente', 'empleado', 'operador');
+
+CREATE TABLE public.bancos
+(
+  id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+  nombre varchar NOT NULL,
+  CONSTRAINT pk_bancos PRIMARY KEY (id)
+ );
+
+CREATE TABLE public.empresas
+(
+ id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+ nombre varchar NOT NULL,
+ CONSTRAINT pk_empresas PRIMARY KEY (id)
+);
+
+
+CREATE TABLE public.empleados
+(
+   id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+   nombre varchar NOT NULL,
+   celular VARCHAR(14) NOT NULL,
+   direccion varchar NOT NULL,
+   rfc varchar NOT NULL,
+   correo VARCHAR NOT NULL,
+   numero_cuenta VARCHAR NOT NULL,
+   banco INT,
+   telefono_casa VARCHAR NOT NULL,
+   empresa INT,
+   creado_en TIMESTAMP NOT NULL DEFAULT NOW(),
+   editado_en TIMESTAMP,
+   username VARCHAR(45) NOT NULL,
+   CONSTRAINT pk_usuario PRIMARY KEY(rfc),
+   CONSTRAINT fk_bancos FOREIGN KEY(banco) REFERENCES public.bancos(id),
+   CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id)
+);
+
+CREATE TABLE public.adelantos
+(
+  id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+  monto FLOAT NOT NULL,
+  fecha TIMESTAMP NOT NULL DEFAULT NOW(),
+  estatus_adelanto estatus_adelanto NOT NULL,
+  CONSTRAINT pk_adelantos PRIMARY KEY (id)
+ );
+
+
+
+CREATE TABLE public.tickets
+(
+  id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+  empresa INT NOT NULL,
+  tipo_usuario tipo_usuario NOT NULL,
+  tipo_ticket tipo_ticket NOT NULL,
+  asunto VARCHAR NOT NULL,
+  descripcion VARCHAR,
+  tipo_contacto tipo_contacto,
+  contacto VARCHAR,
+  fecha TIMESTAMP NOT NULL DEFAULT NOW(),
+  CONSTRAINT pk_tickets PRIMARY KEY (id),
+  CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id)
+ );
+
+CREATE TABLE public.operadores
+(
+  id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+  nombre varchar NOT NULL,
+  username varchar NOT NULL,
+  password varchar NOT NULL,
+  creado_en TIMESTAMP NOT NULL DEFAULT NOW(),
+  editado_en TIMESTAMP,
+  CONSTRAINT pk_operadores PRIMARY KEY (id)
+ );
+
+
+CREATE TABLE public.gerentes
+(
+  id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+  username varchar NOT NULL,
+  password varchar NOT NULL,
+  creado_en TIMESTAMP NOT NULL DEFAULT NOW(),
+  editado_en TIMESTAMP,
+  CONSTRAINT pk_gerentes PRIMARY KEY (id)
+ );
+
+CREATE TABLE public.empleados_adelantos
+(
+  id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+  empleado VARCHAR NOT NULL,
+  adelanto INT NOT NULL,
+  CONSTRAINT pk_empleados_adelantos PRIMARY KEY (id),
+  CONSTRAINT fk_empleados FOREIGN KEY(empleado) REFERENCES public.empleados(rfc),
+  CONSTRAINT fk_adelantos FOREIGN KEY(adelanto) REFERENCES public.adelantos(id)
+);
+
+CREATE TABLE public.operadores_empresas
+(
+  id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+  operador INT NOT NULL,
+  empresa INT NOT NULL,
+  CONSTRAINT pk_operadores_empresas PRIMARY KEY(id),
+  CONSTRAINT fk_operadores FOREIGN KEY(operador) REFERENCES public.operadores(id),
+  CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id)
+ );
+
+CREATE TABLE public.gerentes_empresas
+(
+  id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+  gerente INT NOT NULL,
+  empresa INT NOT NULL,
+  CONSTRAINT pk_gerentes_empresas PRIMARY KEY(id),
+  CONSTRAINT fk_gerentes FOREIGN KEY(gerente) REFERENCES public.gerentes(id),
+  CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id)
+ );
