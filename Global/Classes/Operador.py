@@ -37,7 +37,6 @@ class Operador:
 
     def load(self, params):
         exist = self.exist(params)
-        print(exist)
         if not exist:
             raise Exception('El usuario no está registrado')
         else:
