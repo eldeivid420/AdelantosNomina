@@ -12,12 +12,12 @@ def login():
             role = Auth.obtain_role(params['username'])
             if role == 'operador':
                 usuario = Operador(params)
+                return {'token': usuario.web_token, 'empresa': usuario.empresa_nombre, 'tipo': 'operador'}, 200
             elif role == 'gerente':
                 pass
 
         except Exception as e:
             return {'error': str(e)}, 400
-        return usuario.web_token, 200
     except Exception as e:
         return {'error': str(e)}, 400
 

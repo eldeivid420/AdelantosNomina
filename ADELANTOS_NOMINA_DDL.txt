@@ -70,9 +70,11 @@ CREATE TABLE public.operadores
   nombre varchar NOT NULL,
   username varchar NOT NULL,
   password varchar NOT NULL,
+  empresa INT NOT NULL,
   creado_en TIMESTAMP NOT NULL DEFAULT NOW(),
   editado_en TIMESTAMP,
-  CONSTRAINT pk_operadores PRIMARY KEY (id)
+  CONSTRAINT pk_operadores PRIMARY KEY (id),
+  CONSTRAINT fk_empresas FOREIGN KEY (empresa) REFERENCES public.empresas(id)
  );
 
 
@@ -81,9 +83,11 @@ CREATE TABLE public.gerentes
   id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
   username varchar NOT NULL,
   password varchar NOT NULL,
+  empresa INT NOT NULL,
   creado_en TIMESTAMP NOT NULL DEFAULT NOW(),
   editado_en TIMESTAMP,
-  CONSTRAINT pk_gerentes PRIMARY KEY (id)
+  CONSTRAINT pk_gerentes PRIMARY KEY (id),
+  CONSTRAINT fk_empresas FOREIGN KEY (empresa) REFERENCES public.empresas(id)
  );
 
 CREATE TABLE public.empleados_adelantos
@@ -115,3 +119,5 @@ CREATE TABLE public.gerentes_empresas
   CONSTRAINT fk_gerentes FOREIGN KEY(gerente) REFERENCES public.gerentes(id),
   CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id)
  );
+
+ insert into empresas(nombre) values ('autoempresarial');

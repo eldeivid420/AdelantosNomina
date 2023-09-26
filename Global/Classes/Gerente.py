@@ -7,7 +7,7 @@ import datetime
 
 class Gerente:
 
-    def __init__(self):
+    def __init__(self, params, load=True):
         self.id = None
         self.username = None
         self.password = None
