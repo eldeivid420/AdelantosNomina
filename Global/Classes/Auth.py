@@ -1,7 +1,20 @@
 import os
 import jwt
 import datetime
+from Global.Utils.db import post, get
 class Auth:
+
+    @classmethod
+    def obtain_role(cls, username):
+        operador = get('''SELECT id FROM operadores WHERE username = %s''', (username,), False)
+        if operador:
+            return 'operador'
+        if not operador:
+            gerente = get('''SELECT id FROM gerentes WHERE username = %s''', (username,), False)
+            if not gerente:
+                raise Exception(f'No existe el ususario en la base de datos')
+            else:
+                return 'gerente'
 
     @classmethod
     def validar_token(cls,token):
