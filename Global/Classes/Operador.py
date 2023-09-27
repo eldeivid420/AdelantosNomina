@@ -52,7 +52,6 @@ class Operador:
             self.empresa = exist[4]
             self.creado_en = exist[5]
             self.editado_en = exist[6]
-            print(exist)
             h = hashlib.sha256(params['password'].encode('utf-8')).hexdigest()
             if exist[3] != h:
                 raise Exception('Contraseña incorrecta')
@@ -61,6 +60,7 @@ class Operador:
                 timestamp = datetime.datetime.now()
                 web_token = jwt.encode({
                     "id": self.id,
+                    "username": self.username,
                     "timestamp": str(timestamp)
                 },
                     token,
@@ -70,5 +70,3 @@ class Operador:
                 empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (self.empresa,),False)[0]
                 self.empresa_nombre = empresa
                 return self
-
-

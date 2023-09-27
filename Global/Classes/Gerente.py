@@ -15,6 +15,8 @@ class Gerente:
         self.creado_en = None
         self.editado_en = None
         self.web_token = None
+        self.empresa = None
+        self.empresa_nombre = None
         self.load(params) if load else self.create(params)
 
     @classmethod
@@ -31,9 +33,11 @@ class Gerente:
         else:
             self.nombre = params['nombre']
             self.username = params['username'].rstrip()
+            self.empresa = params['empresa']
             h = hashlib.sha256(params['password'].encode('utf-8')).hexdigest()
             self.password = h
-            self.id = post('''INSERT INTO gerentes (username,password,nombre) VALUES (%s,%s,%s) RETURNING id''',(self.username,self.password,self.nombre), False)
+            self.id = post('''INSERT INTO gerentes (username,password,nombre,empresa) VALUES (%s,%s,%s,%s) RETURNING 
+            id''',(self.username,self.password,self.nombre,self.empresa), True)[0]
 
     def load(self, params):
         exist = self.exist(params)
@@ -44,8 +48,9 @@ class Gerente:
             self.nombre = exist[1]
             self.username = exist[2]
             self.password = exist[3]
-            self.creado_en = exist[4]
-            self.editado_en = exist[5]
+            self.empresa = exist[4]
+            self.creado_en = exist[5]
+            self.editado_en = exist[6]
             h = hashlib.sha256(params['password'].encode('utf-8')).hexdigest()
             if exist[3] != h:
                 raise Exception('Contraseña incorrecta')
@@ -60,4 +65,6 @@ class Gerente:
                     algorithm='HS256'
                 )
                 self.web_token = web_token
+                empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (self.empresa,),False)[0]
+                self.empresa_nombre = empresa
                 return self

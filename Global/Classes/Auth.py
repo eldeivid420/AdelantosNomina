@@ -2,6 +2,7 @@ import os
 import jwt
 import datetime
 from Global.Utils.db import post, get
+from Global.Classes.Operador import Operador
 class Auth:
 
     @classmethod
@@ -17,6 +18,20 @@ class Auth:
                 return 'gerente'
 
     @classmethod
+    def generate_token(cls,user):
+        token = os.environ.get('JWT_TOKEN')
+        timestamp = datetime.datetime.now()
+        web_token = jwt.encode({
+            "id": user[0],
+            "username": user[2],
+            "timestamp": str(timestamp)
+        },
+            token,
+            algorithm='HS256'
+        )
+        return web_token
+
+    @classmethod
     def validar_token(cls,token):
         token_desencriptado = jwt.decode(token, os.environ.get('JWT_TOKEN'), 'HS256')
         hora_actual = datetime.datetime.now()
@@ -27,4 +42,10 @@ class Auth:
         if hora_token != hora_actual:
             raise Exception('Token expirado')
         else:
-            return f'Sesión válida'
+            rol = cls.obtain_role(token_desencriptado["username"])
+            params = {'username': token_desencriptado["username"]}
+            mensaje = 'Sesión válida'
+            if rol == "operador":
+                operador = Operador.exist(params)
+                empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (operador[4],),False)[0]
+                return {'nombre': operador[1], 'empresa': empresa, 'tipo': 'operador', 'message': mensaje, 'token': cls.generate_token(operador)}
