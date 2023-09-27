@@ -20,6 +20,22 @@ def create_empleado():
 
 
 def obtener_empleados():
+    """
+    Controller for the route /obtener-empleados
+
+    Method:
+    * GET
+
+    Parameters:
+    * filtro: str - 'alfabetico' -> orders alphabetically; 'fecha' -> orders by date
+    * reverse: str - 'true' -> descending order; 'false' -> ascending order
+
+    Format:
+    * QueryParams
+
+    Returns:
+    * An exception or a 200 status
+    """
     try:
         params = {'filtro': request.args.get('filtro'),
                   'reverse': request.args.get('reverse')}
