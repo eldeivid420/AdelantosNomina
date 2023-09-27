@@ -47,5 +47,5 @@ class Auth:
             mensaje = 'Sesión válida'
             if rol == "operador":
                 operador = Operador.exist(params)
-                empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (operador[4],),False)[0]
+                empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (operador[4],), False)[0]
                 return {'nombre': operador[1], 'empresa': empresa, 'tipo': 'operador', 'message': mensaje}

@@ -32,7 +32,6 @@ CREATE TABLE public.empleados
    empresa INT,
    creado_en TIMESTAMP NOT NULL DEFAULT NOW(),
    editado_en TIMESTAMP,
-   username VARCHAR(45) NOT NULL,
    CONSTRAINT pk_usuario PRIMARY KEY(rfc),
    CONSTRAINT fk_bancos FOREIGN KEY(banco) REFERENCES public.bancos(id),
    CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id)
@@ -121,3 +120,6 @@ CREATE TABLE public.gerentes_empresas
  );
 
  insert into empresas(nombre) values ('autoempresarial');
+ insert into bancos(nombre) values('BANAMEX');
+ insert into bancos(nombre) values('BANORTE');
+ insert into bancos(nombre) values('BBVA');
