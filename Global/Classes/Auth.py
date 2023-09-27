@@ -48,4 +48,4 @@ class Auth:
             if rol == "operador":
                 operador = Operador.exist(params)
                 empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (operador[4],),False)[0]
-                return {'nombre': operador[1], 'empresa': empresa, 'tipo': 'operador', 'message': mensaje, 'token': cls.generate_token(operador)}
+                return {'nombre': operador[1], 'empresa': empresa, 'tipo': 'operador', 'message': mensaje}

@@ -13,7 +13,7 @@ def login():
             role = Auth.obtain_role(params['username'])
             if role == 'operador':
                 usuario = Operador(params)
-                return {'token': usuario.web_token, 'empresa': usuario.empresa_nombre, 'tipo': 'operador', 'nombre': usuario.nombre, 'mensaje': 'Login exitoso'}, 200
+                return {'token': usuario.web_token, 'empresa': usuario.empresa_nombre, 'tipo': 'operador', 'nombre': usuario.nombre, 'message': 'Login exitoso'}, 200
             elif role == 'gerente':
                 usuario = Gerente(params)
                 return {'token': usuario.web_token, 'empresa': usuario.empresa_nombre, 'tipo': 'gerente'}, 200
