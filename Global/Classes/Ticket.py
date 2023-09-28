@@ -63,7 +63,8 @@ class Ticket:
             raise Exception('No hay registros en la base de datos')
 
         for i in range(len(registros)):
+            print(registros[i])
             tickets.append({'id': registros[i][0], 'tipo_usuario': registros[i][1], 'tipo_ticket': registros[i][2],
                             'asunto': registros[i][3], 'descripcion': registros[i][4], 'tipo_contacto': registros[i][5],
-                            'fecha': registros[i][6]})
+                            'contacto': registros[i][6],'fecha': registros[i][7].strftime("%d/%m/%Y")})
         return tickets

@@ -76,8 +76,10 @@ class Empleado:
         for i in range(len(registros)):
             banco = get('''SELECT nombre FROM bancos WHERE id = %s''', (registros[i][7],), False)[0]
             empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (registros[i][9],), False)[0]
+            if registros[i][11]:
+                registros[i][11] = registros[i][11].strftime("%d/%m/%Y")
             empleados.append({'id': registros[i][0], 'nombre': registros[i][1], 'celular': registros[i][2],
                               'direccion': registros[i][3], 'rfc': registros[i][4], 'correo': registros[i][5],
                               'numero_cuenta': registros[i][6], 'banco': banco, 'telefono_casa': registros[i][8],
-                              'empresa': empresa, 'creado_en': registros[i][10], 'editado_en': registros[i][11]})
+                              'empresa': empresa, 'creado_en': registros[i][10].strftime("%d/%m/%Y"), 'editado_en': registros[i][11]})
         return empleados
