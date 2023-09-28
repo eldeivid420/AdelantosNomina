@@ -68,3 +68,20 @@ class Gerente:
                 empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (self.empresa,),False)[0]
                 self.empresa_nombre = empresa
                 return self
+
+    @classmethod
+    def obtener_bancos(cls, params):
+        bancos = []
+        if params["reverse"] == "true":
+            registros = get('''SELECT * FROM bancos ORDER BY bancos DESC''', (), True)
+        elif params["reverse"] == "false":
+            registros = get('''SELECT * FROM bancos ORDER BY bancos ASC''', (), True)
+        else:
+            raise Exception('reverse sólo puede ser "true" o "false"')
+        if not registros:
+            raise Exception('No hay registros en la base de datos')
+
+        for i in range(len(registros)):
+            bancos.append({'id': registros[i][0], 'nombre': registros[i][1]})
+
+        return bancos
