@@ -22,3 +22,7 @@ def obtener_bancos():
 @GLOBAL_GERENTE_BLUEPRINT.route('/crear-ticket', methods=['POST'])
 def crear_ticket():
     return t.create_ticket()
+
+@GLOBAL_GERENTE_BLUEPRINT.route('/obtener-tickets', methods=['GET'])
+def obtener_tickets():
+    return t.obtener_tickets()

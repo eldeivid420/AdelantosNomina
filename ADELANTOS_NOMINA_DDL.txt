@@ -1,6 +1,6 @@
 create type estatus_adelanto as enum('creado', 'pagado', 'cancelado');
 create type tipo_ticket as enum('queja', 'sugerencia', 'otro');
-create type tipo_contacto as enum('telefono','correo');
+create type tipo_contacto as enum('telefono','correo','No quiero que me contacten');
 create type tipo_usuario as enum('gerente', 'empleado', 'operador');
 
 CREATE TABLE public.bancos
@@ -52,7 +52,6 @@ CREATE TABLE public.adelantos
 CREATE TABLE public.tickets
 (
   id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
-  empresa INT NOT NULL,
   tipo_usuario tipo_usuario NOT NULL,
   tipo_ticket tipo_ticket NOT NULL,
   asunto VARCHAR NOT NULL,
@@ -60,8 +59,7 @@ CREATE TABLE public.tickets
   tipo_contacto tipo_contacto,
   contacto VARCHAR,
   fecha TIMESTAMP NOT NULL DEFAULT NOW(),
-  CONSTRAINT pk_tickets PRIMARY KEY (id),
-  CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id)
+  CONSTRAINT pk_tickets PRIMARY KEY (id)
  );
 
 CREATE TABLE public.operadores
