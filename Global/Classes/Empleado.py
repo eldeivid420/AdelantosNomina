@@ -28,9 +28,7 @@ class Empleado:
 
     @classmethod
     def verify_phone(cls, phone):
-        print(phone)
         exist = get('''SELECT celular FROM empleados WHERE celular = %s''',(phone,),False)
-        print(exist)
         if not exist:
             return False
         else:

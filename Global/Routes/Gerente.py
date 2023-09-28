@@ -2,7 +2,8 @@ from flask import Blueprint
 from Global.Controllers import Operador as o
 from Global.Controllers import Empleado as e
 from Global.Controllers import Gerente as g
-from Global.Controllers import  Ticket as t
+from Global.Controllers import Ticket as t
+from Global.Controllers import Adelanto as a
 
 GLOBAL_GERENTE_BLUEPRINT = Blueprint('GLOBAL_GERENTE_BLUEPRINT', __name__)
 
@@ -26,3 +27,7 @@ def crear_ticket():
 @GLOBAL_GERENTE_BLUEPRINT.route('/obtener-tickets', methods=['GET'])
 def obtener_tickets():
     return t.obtener_tickets()
+
+@GLOBAL_GERENTE_BLUEPRINT.route('/crear-adelanto', methods=['POST'])
+def crear_adelanto():
+    return a.crear_adelanto()
