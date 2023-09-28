@@ -26,6 +26,16 @@ class Empleado:
         else:
             return False
 
+    @classmethod
+    def verify_phone(cls, phone):
+        print(phone)
+        exist = get('''SELECT celular FROM empleados WHERE celular = %s''',(phone,),False)
+        print(exist)
+        if not exist:
+            return False
+        else:
+            return True
+
     def create(self, params):
         self.nombre = params['nombre']
         self.celular = params['celular']

@@ -39,6 +39,7 @@ class Operador:
             self.password = h
             self.id = post('''INSERT INTO operadores (username,password,nombre,empresa) VALUES (%s,%s,%s,
             %s) RETURNING id''',(self.username,self.password,self.nombre,self.empresa), True)
+            post('''INSERT INTO operadores_empresas (operador,empresa) VALUES (%s,%s)''',(self.id, self.empresa), False)
 
     def load(self, params):
         exist = self.exist(params)

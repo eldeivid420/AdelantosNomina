@@ -1,4 +1,4 @@
-create type estatus_adelanto as enum('creado', 'pagado', 'entregado', 'cancelado');
+create type estatus_adelanto as enum('creado', 'pagado', 'cancelado');
 create type tipo_ticket as enum('queja', 'sugerencia', 'otro');
 create type tipo_contacto as enum('telefono','correo');
 create type tipo_usuario as enum('gerente', 'empleado', 'operador');
@@ -34,7 +34,8 @@ CREATE TABLE public.empleados
    editado_en TIMESTAMP,
    CONSTRAINT pk_usuario PRIMARY KEY(rfc),
    CONSTRAINT fk_bancos FOREIGN KEY(banco) REFERENCES public.bancos(id),
-   CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id)
+   CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id),
+   CONSTRAINT unique_fields_empleados UNIQUE(celular, rfc)
 );
 
 CREATE TABLE public.adelantos
@@ -73,7 +74,8 @@ CREATE TABLE public.operadores
   creado_en TIMESTAMP NOT NULL DEFAULT NOW(),
   editado_en TIMESTAMP,
   CONSTRAINT pk_operadores PRIMARY KEY (id),
-  CONSTRAINT fk_empresas FOREIGN KEY (empresa) REFERENCES public.empresas(id)
+  CONSTRAINT fk_empresas FOREIGN KEY (empresa) REFERENCES public.empresas(id),
+  CONSTRAINT unique_fields_operadores UNIQUE (username)
  );
 
 
@@ -86,7 +88,8 @@ CREATE TABLE public.gerentes
   creado_en TIMESTAMP NOT NULL DEFAULT NOW(),
   editado_en TIMESTAMP,
   CONSTRAINT pk_gerentes PRIMARY KEY (id),
-  CONSTRAINT fk_empresas FOREIGN KEY (empresa) REFERENCES public.empresas(id)
+  CONSTRAINT fk_empresas FOREIGN KEY (empresa) REFERENCES public.empresas(id),
+  CONSTRAINT unique_fields_gerentes UNIQUE (username)
  );
 
 CREATE TABLE public.empleados_adelantos
