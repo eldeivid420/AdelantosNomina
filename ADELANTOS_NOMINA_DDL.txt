@@ -35,7 +35,9 @@ CREATE TABLE public.empleados
    CONSTRAINT pk_usuario PRIMARY KEY(rfc),
    CONSTRAINT fk_bancos FOREIGN KEY(banco) REFERENCES public.bancos(id),
    CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id),
-   CONSTRAINT unique_fields_empleados UNIQUE(celular, rfc)
+   CONSTRAINT unique_fields_empleados UNIQUE(empresa, rfc),
+   CONSTRAINT unique_fields_empleados2 UNIQUE(empresa, celular),
+   CONSTRAINT unique_fields_empleados3 UNIQUE(empresa, correo)
 );
 
 CREATE TABLE public.adelantos
@@ -73,7 +75,7 @@ CREATE TABLE public.operadores
   editado_en TIMESTAMP,
   CONSTRAINT pk_operadores PRIMARY KEY (id),
   CONSTRAINT fk_empresas FOREIGN KEY (empresa) REFERENCES public.empresas(id),
-  CONSTRAINT unique_fields_operadores UNIQUE (username)
+  CONSTRAINT unique_fields_operadores UNIQUE (empresa, username)
  );
 
 
@@ -87,7 +89,7 @@ CREATE TABLE public.gerentes
   editado_en TIMESTAMP,
   CONSTRAINT pk_gerentes PRIMARY KEY (id),
   CONSTRAINT fk_empresas FOREIGN KEY (empresa) REFERENCES public.empresas(id),
-  CONSTRAINT unique_fields_gerentes UNIQUE (username)
+  CONSTRAINT unique_fields_gerentes UNIQUE (empresa, username)
  );
 
 CREATE TABLE public.empleados_adelantos
