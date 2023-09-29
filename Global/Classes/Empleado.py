@@ -3,6 +3,7 @@ from json import load
 
 
 class Empleado:
+
     def __init__(self, params, load=True):
         self.id = None
         self.nombre = None
@@ -81,3 +82,12 @@ class Empleado:
                               'numero_cuenta': registros[i][6], 'banco': banco, 'telefono_casa': registros[i][8],
                               'empresa': empresa, 'creado_en': registros[i][10].strftime("%d/%m/%Y"), 'editado_en': registros[i][11]})
         return empleados
+
+    @classmethod
+    def detalles_empleado(cls, params):
+        empleado = get('''SELECT * FROM empleados WHERE id = %s''', (params["id"],),False)
+        empresa = get('''SELECT nombre FROM empresas WHERE id = %s''',(empleado[9],),False)[0]
+        banco = get('''SELECT nombre FROM bancos WHERE id = %s''', (empleado[7],),False)[0]
+        return {'id': empleado[0], 'nombre': empleado[1], 'celular': empleado[2], 'direccion': empleado[3],
+                'rfc': empleado[4], 'correo': empleado[5], 'numero_cuenta': empleado[6], 'banco': banco,
+                'telefono_casa': empleado[8], 'empresa': empresa, 'creado_en': empleado[10], 'editado_en': empleado[11]}

@@ -42,3 +42,11 @@ def obtener_empleados():
         return Empleado.obtener_empleados(params), 200
     except Exception as e:
         return {'error': str(e)}, 400
+
+
+def detalles_empleado():
+    try:
+        params = {'id': request.args.get('id')}
+        return Empleado.detalles_empleado(params), 200
+    except Exception as e:
+        return {'error': str(e)}, 400

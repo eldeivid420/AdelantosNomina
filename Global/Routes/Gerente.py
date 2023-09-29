@@ -16,6 +16,10 @@ def create_operador():
 def obtener_empleados():
     return e.obtener_empleados()
 
+@GLOBAL_GERENTE_BLUEPRINT.route('/detalles-empleado', methods=['GET'])
+def detalles_empleado():
+    return e.detalles_empleado()
+
 @GLOBAL_GERENTE_BLUEPRINT.route('/obtener-bancos', methods=['GET'])
 def obtener_bancos():
     return g.obtener_bancos()

@@ -25,3 +25,7 @@ def cancelar_solicitud():
 @GLOBAL_OPERADOR_BLUEPRINT.route('/obtener-adelantos', methods=['GET'])
 def obtener_adelantos():
     return a.obtener_adelantos()
+
+@GLOBAL_OPERADOR_BLUEPRINT.route('/detalles-empleado', methods=['GET'])
+def detalles_empleado():
+    return e.detalles_empleado()
