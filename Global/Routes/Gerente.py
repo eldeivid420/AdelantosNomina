@@ -28,6 +28,10 @@ def crear_ticket():
 def obtener_tickets():
     return t.obtener_tickets()
 
-@GLOBAL_GERENTE_BLUEPRINT.route('/crear-adelanto', methods=['POST'])
+'''@GLOBAL_GERENTE_BLUEPRINT.route('/crear-adelanto', methods=['POST'])
 def crear_adelanto():
-    return a.crear_adelanto()
+    return a.crear_adelanto()'''
+
+@GLOBAL_GERENTE_BLUEPRINT.route('/obtener-solicitudes', methods=['GET'])
+def obtener_solicitudes():
+    return a.obtener_solicitudes()

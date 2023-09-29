@@ -49,3 +49,20 @@ def opcion1():
         return f'Adelanto con id {adelanto.id} creado'
     except Exception as e:
         return {'error': str(e)}, 400'''
+
+
+def cancelar_solicitud():
+    try:
+        params = {'id': request.json.get('id')}
+        return Adelanto.cancelar_solicitud(params), 200
+    except Exception as e:
+        return {'error': str(e)}, 400
+
+
+def obtener_solicitudes():
+    try:
+        params = {'estatus_adelanto': request.args.get('estatus_adelanto'),
+                  'monto': request.args.get('monto')}
+        return Adelanto.obtener_solicitudes(params), 200
+    except Exception as e:
+        return {'error': str(e)}, 400
