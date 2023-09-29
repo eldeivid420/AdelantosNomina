@@ -95,10 +95,10 @@ CREATE TABLE public.gerentes
 CREATE TABLE public.empleados_adelantos
 (
   id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
-  empleado VARCHAR NOT NULL,
+  empleado INT NOT NULL,
   adelanto INT NOT NULL,
   CONSTRAINT pk_empleados_adelantos PRIMARY KEY (id),
-  CONSTRAINT fk_empleados FOREIGN KEY(empleado) REFERENCES public.empleados(rfc),
+  CONSTRAINT fk_empleados FOREIGN KEY(empleado) REFERENCES public.empleados(id),
   CONSTRAINT fk_adelantos FOREIGN KEY(adelanto) REFERENCES public.adelantos(id)
 );
 
