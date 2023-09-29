@@ -41,7 +41,7 @@ class Adelanto:
             return f'Solicitud cancelada exitosamente'
 
     @classmethod
-    def obtener_solicitudes(cls, params):
+    def obtener_adelantos(cls, params):
         monto = params["monto"]
         estatus_adelanto = params["estatus_adelanto"]
         solicitudes = []
@@ -64,3 +64,13 @@ class Adelanto:
                                 'id_empleado': datos_empleado[0], 'nombre_empleado': datos_empleado[1]})
 
         return solicitudes
+
+    @classmethod
+    def pagar_adelanto(cls, params):
+        adelanto = cls.exist(params["id"])
+        if not adelanto:
+            raise Exception('No hay adelantos con el id proporcionado')
+        else:
+            post('''UPDATE adelantos SET estatus_adelanto = 'pagado' WHERE id = %s''', (adelanto[0],), False)
+            return 'Adelanto pagado exitosamente'
+

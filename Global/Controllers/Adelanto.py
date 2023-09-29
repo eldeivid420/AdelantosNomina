@@ -59,10 +59,18 @@ def cancelar_solicitud():
         return {'error': str(e)}, 400
 
 
-def obtener_solicitudes():
+def obtener_adelantos():
     try:
         params = {'estatus_adelanto': request.args.get('estatus_adelanto'),
                   'monto': request.args.get('monto')}
-        return Adelanto.obtener_solicitudes(params), 200
+        return Adelanto.obtener_adelantos(params), 200
+    except Exception as e:
+        return {'error': str(e)}, 400
+
+
+def pagar_adelanto():
+    try:
+        params = {'id': request.json.get('id')}
+        return Adelanto.pagar_adelanto(params), 200
     except Exception as e:
         return {'error': str(e)}, 400

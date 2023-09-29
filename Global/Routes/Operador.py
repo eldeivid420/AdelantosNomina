@@ -18,10 +18,10 @@ def obtener_empleados():
 def crear_ticket():
     return t.create_ticket()
 
-@GLOBAL_OPERADOR_BLUEPRINT.route('/cancelar-solicitud', methods=['POST'])
+@GLOBAL_OPERADOR_BLUEPRINT.route('/cancelar-adelanto', methods=['POST'])
 def cancelar_solicitud():
     return a.cancelar_solicitud()
 
-@GLOBAL_OPERADOR_BLUEPRINT.route('/obtener-solicitudes', methods=['GET'])
-def obtener_solicitudes():
-    return a.obtener_solicitudes()
+@GLOBAL_OPERADOR_BLUEPRINT.route('/obtener-adelantos', methods=['GET'])
+def obtener_adelantos():
+    return a.obtener_adelantos()
