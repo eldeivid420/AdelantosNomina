@@ -11,3 +11,10 @@ def create_operador():
         return f'El operador: {operador.nombre} se registró correctamente con el id: {operador.id[0]}', 200
     except Exception as e:
         return {'error': str(e)}, 400
+
+
+def obtener_operadores():
+    try:
+        return Operador.obtener_operadores()
+    except Exception as e:
+        return {'error': str(e)}, 400

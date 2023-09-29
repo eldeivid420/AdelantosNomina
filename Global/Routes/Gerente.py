@@ -28,9 +28,9 @@ def crear_ticket():
 def obtener_tickets():
     return t.obtener_tickets()
 
-'''@GLOBAL_GERENTE_BLUEPRINT.route('/crear-adelanto', methods=['POST'])
+@GLOBAL_GERENTE_BLUEPRINT.route('/crear-adelanto', methods=['POST'])
 def crear_adelanto():
-    return a.crear_adelanto()'''
+    return a.crear_adelanto()
 
 @GLOBAL_GERENTE_BLUEPRINT.route('/obtener-adelantos', methods=['GET'])
 def obtener_adelantos():
@@ -39,3 +39,11 @@ def obtener_adelantos():
 @GLOBAL_GERENTE_BLUEPRINT.route('/pagar-adelanto', methods=['POST'])
 def pagar_adelanto():
     return a.pagar_adelanto()
+
+@GLOBAL_GERENTE_BLUEPRINT.route('/obtener-operadores', methods=['GET'])
+def obtener_operadores():
+    return o.obtener_operadores()
+
+@GLOBAL_GERENTE_BLUEPRINT.route('/crear-gerente', methods=['POST'])
+def crear_gerente():
+    return g.create_gerente()

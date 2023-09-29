@@ -42,13 +42,13 @@ def opcion1():
         return 'success', 200
 
 
-'''def crear_adelanto():
+def crear_adelanto():
     try:
-        params = {'monto': 1000, 'celular': '+5215526998823'}
+        params = {'monto': request.json.get('monto'), 'celular': request.json.get('celular')}
         adelanto = Adelanto(params, False)
         return f'Adelanto con id {adelanto.id} creado'
     except Exception as e:
-        return {'error': str(e)}, 400'''
+        return {'error': str(e)}, 400
 
 
 def cancelar_solicitud():

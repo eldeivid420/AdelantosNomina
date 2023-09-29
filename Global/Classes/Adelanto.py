@@ -24,9 +24,9 @@ class Adelanto:
 
     def create(self, params):
         self.monto = params["monto"]
-        rfc = get('''SELECT rfc FROM empleados WHERE celular = %s''',(params["celular"],), False)[0]
+        empleado = get('''SELECT id FROM empleados WHERE celular = %s''',(params["celular"],), False)[0]
         self.id = post('''INSERT INTO adelantos(monto,estatus_adelanto) VALUES (%s,'creado') RETURNING id''', (self.monto,), True)[0]
-        post('''INSERT INTO empleados_adelantos(empleado,adelanto) VALUES (%s,%s)''', (rfc, self.id), False)
+        post('''INSERT INTO empleados_adelantos(empleado,adelanto) VALUES (%s,%s)''', (empleado, self.id), False)
 
     def load(self):
         pass
@@ -57,7 +57,7 @@ class Adelanto:
                                      (estatus_adelanto, monto), True)
         for i in range(len(registros_adelanto)):
             empleado = get('''SELECT empleado FROM empleados_adelantos WHERE adelanto = %s ''', (registros_adelanto[i][0],), False)[0]
-            datos_empleado = get('''SELECT id, nombre FROM empleados WHERE rfc = %s''', (empleado,),False)
+            datos_empleado = get('''SELECT id, nombre FROM empleados WHERE id = %s''', (empleado,),False)
 
             solicitudes.append({'id_adelanto': registros_adelanto[i][0], 'monto': registros_adelanto[i][1],
                                 'fecha': registros_adelanto[i][2].strftime("%d/%m/%Y"), 'estatus_adelanto': registros_adelanto[i][3],

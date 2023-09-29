@@ -71,3 +71,14 @@ class Operador:
                 empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (self.empresa,),False)[0]
                 self.empresa_nombre = empresa
                 return self
+
+    @classmethod
+    def obtener_operadores(cls):
+        operadores = []
+        registros = get('''SELECT * FROM operadores''',(), True)
+        print(registros)
+        for i in range(len(registros)):
+            empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (registros[i][0],), False)
+            print(empresa)
+            operadores.append({'id': registros[i][0], 'username': registros[i][1], 'empresa': empresa[i]})
+        return operadores

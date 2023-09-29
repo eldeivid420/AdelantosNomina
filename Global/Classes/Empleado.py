@@ -19,8 +19,8 @@ class Empleado:
     @classmethod
     def exist(cls, params):
         rfc = params['rfc']
-        celular = params['rfc']
-        registro = get('''SELECT id FROM empleados WHERE rfc = %s and celular = %s''', (rfc, celular), False)
+        empresa = params['empresa']
+        registro = get('''SELECT id FROM empleados WHERE rfc = %s and empresa = %s''', (rfc, empresa), False)
         if registro:
             raise Exception('El rfc o el celular ya existen en la base de datos')
         else:
