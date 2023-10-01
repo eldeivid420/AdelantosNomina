@@ -38,7 +38,7 @@ class Adelanto:
             raise Exception('La solicitud ya había sido cancelada')
         else:
             post('''UPDATE adelantos SET estatus_adelanto = 'cancelado' WHERE id = %s''', (adelanto[0],), False)
-            return f'Solicitud cancelada exitosamente'
+            return {"message":'Solicitud cancelada exitosamente'}
 
     @classmethod
     def obtener_adelantos(cls, params):

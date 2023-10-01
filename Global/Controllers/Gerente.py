@@ -7,7 +7,7 @@ def create_gerente():
                   'nombre': request.json.get('nombre'),
                   'password': request.json.get('password')}
         gerente = Gerente(params, False)
-        return f'El gerente: {gerente.nombre} se registró correctamente con el id: {gerente.id}', 200
+        return {"message":f'El gerente: {gerente.nombre} se registró correctamente con el id: {gerente.id}'}, 200
     except Exception as e:
         return {'error': str(e)}, 400
 
