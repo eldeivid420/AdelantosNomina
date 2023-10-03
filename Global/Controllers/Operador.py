@@ -18,3 +18,30 @@ def obtener_operadores():
         return Operador.obtener_operadores()
     except Exception as e:
         return {'error': str(e)}, 400
+
+
+def buscar_operador():
+    try:
+        params = {'id': request.args.get('id')}
+        return Operador.obtener_operador(params), 200
+    except Exception as e:
+        return {'error': str(e)}, 400
+
+def editar_operador():
+    try:
+        params = {'id': request.json.get('id'),
+                  'nombre': request.json.get('nombre'),
+                  'username': request.json.get('username'),
+                  'password': request.json.get('password'),
+                  'empresa': request.json.get('empresa')}
+        return Operador.editar_operador(params), 200
+    except Exception as e:
+        return {'error': str(e)}, 400
+
+
+def eliminar_operador():
+    try:
+        params = {'id': request.json.get('id')}
+        return Operador.eliminar_operador(params), 200
+    except Exception as e:
+        return {'error': str(e)}, 400

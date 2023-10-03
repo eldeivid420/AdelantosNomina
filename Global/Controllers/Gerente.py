@@ -18,3 +18,4 @@ def obtener_bancos():
         return Gerente.obtener_bancos(params)
     except Exception as e:
         return {'error': str(e)}, 400
+

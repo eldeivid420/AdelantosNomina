@@ -73,6 +73,18 @@ class Operador:
                 return self
 
     @classmethod
+    def obtener_operador(cls, params):
+        # modificar si se agregan empresas
+        registro = get('''SELECT * FROM operadores WHERE id = %s''', (params["id"],), False)
+        if not registro:
+            raise Exception('No hay usuarios registrados con ese id')
+        empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (registro[4],), False)[0]
+        if registro[6]:
+            registro[6] = registro[6].strftime("%d/%m/%Y")
+        return {'id': registro[0], 'nombre': registro[1], 'username': registro[2], 'empresa': empresa,
+                'creado_en': registro[5].strftime("%d/%m/%Y"), 'editado_en': registro[6]}
+
+    @classmethod
     def obtener_operadores(cls):
         operadores = []
         registros = get('''SELECT * FROM operadores''',(), True)
@@ -82,3 +94,40 @@ class Operador:
             print(empresa)
             operadores.append({'id': registros[i][0], 'username': registros[i][1], 'empresa': empresa[i]})
         return operadores
+
+    @classmethod
+    def editar_operador(cls, params):
+        editado = False
+        exist = get('''SELECT username FROM operadores WHERE id = %s''',(params["id"],), False)
+        if not exist:
+            raise Exception('No hay usuarios registrados con ese id')
+
+        if params["password"]:
+            h = hashlib.sha256(params['password'].encode('utf-8')).hexdigest()
+            post('''UPDATE operadores SET password = %s WHERE id = %s''', (h, params["id"]), False)
+            editado = True
+        if params["nombre"]:
+            post('''UPDATE operadores SET nombre = %s WHERE id = %s''', (params["nombre"], params["id"]), False)
+            editado = True
+
+        if params["empresa"]:
+            post('''UPDATE operadores SET empresa = %s WHERE id = %s''', (params["empresa"], params["id"]), False)
+            editado = True
+
+        if params["username"]:
+            post('''UPDATE operadores SET username = %s WHERE id = %s''', (params["username"], params["id"]), False)
+            editado = True
+
+        if editado:
+            post('''UPDATE operadores SET editado_en = NOW() WHERE id = %s''',(params["id"],), False)
+
+        return 'Usuario actualizado exitosamente'
+
+    @classmethod
+    def eliminar_operador(cls, params):
+        exist = get('''SELECT username FROM operadores WHERE id = %s''',(params["id"],), False)
+        if not exist:
+            raise Exception('No hay usuarios registrados con ese id')
+        post('''DELETE FROM operadores WHERE id = %s''', (params["id"],), False)
+        post('''DELETE FROM operadores_empresas WHERE operador = %s''', (params["id"],), False)
+        return 'Operador eliminado exitosamente'

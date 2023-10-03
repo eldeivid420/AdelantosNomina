@@ -51,3 +51,15 @@ def obtener_operadores():
 @GLOBAL_GERENTE_BLUEPRINT.route('/crear-gerente', methods=['POST'])
 def crear_gerente():
     return g.create_gerente()
+
+@GLOBAL_GERENTE_BLUEPRINT.route('/buscar-operador', methods=['GET'])
+def buscar_operador():
+    return o.buscar_operador()
+
+@GLOBAL_GERENTE_BLUEPRINT.route('/editar-operador', methods=['POST'])
+def editar_operador():
+    return o.editar_operador()
+
+@GLOBAL_GERENTE_BLUEPRINT.route('/eliminar-operador', methods=['POST'])
+def eliminar_operador():
+    return o.eliminar_operador()
