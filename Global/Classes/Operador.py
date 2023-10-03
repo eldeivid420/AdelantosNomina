@@ -89,8 +89,9 @@ class Operador:
         operadores = []
         registros = get('''SELECT * FROM operadores''',(), True)
         for i in range(len(registros)):
-            empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (registros[i][0],), False)
-            operadores.append({'id': registros[i][0], 'username': registros[i][1], 'empresa': empresa[i]})
+            #empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (registros[i][0],), False)
+            operadores.append({'id': registros[i][0], 'username': registros[i][2], 'nombre': registros[i][1],
+                               'creado_en': registros[i][5].strftime("%d/%m/%Y")})
         return operadores
 
     @classmethod
