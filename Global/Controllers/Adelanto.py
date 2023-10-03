@@ -41,6 +41,36 @@ def opcion1():
     else:
         return 'success', 200
 
+def opcion2():
+    from main import enviar_mensaje
+    resp = MessagingResponse()
+
+    opcion = request.form["ListTitle"]
+    if opcion == "Salir":
+        resp.message("Gracias por usar nuestro servicio")
+        return str(resp), 200
+
+    if opcion == "Cancelar un adelanto":
+        params = {'celular': request.form["From"][9:]}
+        cancelacion = Empleado.cancelar_ultimo_adelanto(params)
+
+        if cancelacion == 'no registros':
+            enviar_mensaje('HX5e4518fa767840cff123d755e771401a')
+            return 'success', 200
+        elif cancelacion == 'pagado':
+            enviar_mensaje('HX33104d9a38f633d1c95c8aec6158b937')
+            return 'success', 200
+        elif cancelacion == 'cancelado':
+            enviar_mensaje('HXabb17014142d102191eb425fce0393d4')
+            return 'success', 200
+        elif cancelacion == 'realizado':
+            enviar_mensaje('HX9d62716fffb5f94fd537c54c82fe9c17')
+            return 'success', 200
+
+    else:
+        return 'success', 200
+
+
 
 def crear_adelanto():
     try:

@@ -91,3 +91,23 @@ class Empleado:
         return {'id': empleado[0], 'nombre': empleado[1], 'celular': empleado[2], 'direccion': empleado[3],
                 'rfc': empleado[4], 'correo': empleado[5], 'numero_cuenta': empleado[6], 'banco': banco,
                 'telefono_casa': empleado[8], 'empresa': empresa, 'creado_en': empleado[10], 'editado_en': empleado[11]}
+
+    @classmethod
+    def cancelar_ultimo_adelanto(cls, params):
+        # revisar si se agregan mas empresas
+        empleado = get('''SELECT id FROM empleados WHERE celular = %s''',(params["celular"],), False)
+        adelanto = get('''SELECT adelanto FROM empleados_adelantos WHERE empleado = %s ORDER BY adelanto DESC''',(empleado,), False)[0]
+        if not adelanto:
+            return 'no registros'
+        estatus = get('''SELECT estatus_adelanto FROM adelantos WHERE id = %s''', (adelanto,), False)[0]
+
+        if estatus == 'cancelado':
+            return 'cancelado'
+        elif estatus == 'pagado':
+            return 'pagado'
+        elif estatus == 'creado':
+            post('''UPDATE adelantos SET estatus_adelanto = 'cancelado' WHERE id = %s''', (adelanto,), False)
+            return 'realizado'
+        else:
+            return False
+

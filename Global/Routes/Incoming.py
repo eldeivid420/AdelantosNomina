@@ -23,7 +23,7 @@ def incoming():
             enviar_mensaje('HX9cbcc1cd286f6fd37600a34826b19589')
         return a.opcion1()
     elif request.form["Body"] == 'Opcion 2':
-        pass
+        return a.opcion2()
     elif request.form["Body"] == 'Opcion 3':
         pass
     else:
