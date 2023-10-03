@@ -30,6 +30,9 @@ class Gerente:
     def create(self, params):
         if self.exist(params):
             raise Exception('El gerente ya habia sido registrado')
+        exist_operador = get('''SELECT id FROM operadores WHERE username = %s''',(params['username'],),False)
+        if exist_operador:
+            raise Exception('Ya existe ese usuario en la base de datos')
         else:
             self.nombre = params['nombre']
             self.username = params['username'].rstrip()
