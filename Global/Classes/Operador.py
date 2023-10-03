@@ -112,6 +112,7 @@ class Operador:
 
         if params["empresa"]:
             post('''UPDATE operadores SET empresa = %s WHERE id = %s''', (params["empresa"], params["id"]), False)
+            post('''UPDATE operadores_empresas SET empresa = %s WHERE operador = %s''', (params["empresa"], params["id"]), False)
             editado = True
 
         if params["username"]:
