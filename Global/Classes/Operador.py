@@ -31,6 +31,9 @@ class Operador:
     def create(self, params):
         if self.exist(params):
             raise Exception('El operador ya habia sido registrado')
+        exist_gerente = get('''SELECT id FROM gerentes WHERE username = %s''',(params['username'],),False)
+        if exist_gerente:
+            raise Exception('Ya existe ese usuario en la base de datos')
         else:
             self.nombre = params['nombre']
             self.username = params['username'].rstrip()
@@ -43,6 +46,7 @@ class Operador:
 
     def load(self, params):
         exist = self.exist(params)
+        print(exist)
         if not exist:
             raise Exception('El usuario no está registrado')
         else:
@@ -87,11 +91,11 @@ class Operador:
     @classmethod
     def obtener_operadores(cls):
         operadores = []
-        registros = get('''SELECT * FROM operadores''',(), True)
+        registros = get('''SELECT id,username,nombre,creado_en FROM operadores''', (), True)
         for i in range(len(registros)):
             #empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (registros[i][0],), False)
-            operadores.append({'id': registros[i][0], 'username': registros[i][2], 'nombre': registros[i][1],
-                               'creado_en': registros[i][5].strftime("%d/%m/%Y")})
+            operadores.append({'id': registros[i][0], 'username': registros[i][1], 'nombre': registros[i][2],
+                               'creado_en': registros[i][3].strftime("%d/%m/%Y")})
         return operadores
 
     @classmethod

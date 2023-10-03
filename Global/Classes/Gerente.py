@@ -36,8 +36,8 @@ class Gerente:
             self.empresa = 1
             h = hashlib.sha256(params['password'].encode('utf-8')).hexdigest()
             self.password = h
-            self.id = post('''INSERT INTO gerentes (username,password,empresa) VALUES (%s,%s,%s) RETURNING 
-            id''',(self.username,self.password,self.empresa), True)[0]
+            self.id = post('''INSERT INTO gerentes (username,nombre,password,empresa) VALUES (%s,%s,%s,%s) RETURNING 
+            id''',(self.username,self.nombre,self.password,self.empresa), True)[0]
 
     def load(self, params):
         exist = self.exist(params)
@@ -45,19 +45,21 @@ class Gerente:
             raise Exception('El usuario no está registrado')
         else:
             self.id = exist[0]
-            self.username = exist[1]
-            self.password = exist[2]
-            self.empresa = exist[3]
-            self.creado_en = exist[4]
-            self.editado_en = exist[5]
+            self.nombre = exist[1]
+            self.username = exist[2]
+            self.password = exist[3]
+            self.empresa = exist[4]
+            self.creado_en = exist[5]
+            self.editado_en = exist[6]
             h = hashlib.sha256(params['password'].encode('utf-8')).hexdigest()
-            if exist[2] != h:
+            if exist[3] != h:
                 raise Exception('Contraseña incorrecta')
             else:
                 token = os.environ.get('JWT_TOKEN')
                 timestamp = datetime.datetime.now()
                 web_token = jwt.encode({
                     "id": self.id,
+                    "username": self.username,
                     "timestamp": str(timestamp)
                 },
                     token,

@@ -82,6 +82,7 @@ CREATE TABLE public.operadores
 CREATE TABLE public.gerentes
 (
   id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+  nombre varchar NOT NULL,
   username varchar NOT NULL,
   password varchar NOT NULL,
   empresa INT NOT NULL,

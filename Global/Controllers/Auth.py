@@ -9,14 +9,13 @@ def login():
         params = {'username': request.json.get('username'),
                   'password': request.json.get('password')}
         try:
-
             role = Auth.obtain_role(params['username'])
             if role == 'operador':
                 usuario = Operador(params)
                 return {'token': usuario.web_token, 'empresa': usuario.empresa_nombre, 'tipo': 'operador', 'nombre': usuario.nombre, 'message': 'Login exitoso'}, 200
             elif role == 'gerente':
                 usuario = Gerente(params)
-                return {'token': usuario.web_token, 'empresa': usuario.empresa_nombre, 'tipo': 'gerente'}, 200
+                return {'token': usuario.web_token, 'empresa': usuario.empresa_nombre, 'tipo': 'gerente', 'nombre': usuario.nombre, 'message': 'Login exitoso'}, 200
 
         except Exception as e:
             return {'error': str(e)}, 400

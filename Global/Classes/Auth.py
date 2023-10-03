@@ -3,6 +3,7 @@ import jwt
 import datetime
 from Global.Utils.db import post, get
 from Global.Classes.Operador import Operador
+from Global.Classes.Gerente import Gerente
 class Auth:
 
     @classmethod
@@ -49,3 +50,7 @@ class Auth:
                 operador = Operador.exist(params)
                 empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (operador[4],), False)[0]
                 return {'nombre': operador[1], 'empresa': empresa, 'tipo': 'operador', 'message': mensaje}
+            elif rol == 'gerente':
+                gerente = Gerente.exist(params)
+                empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (gerente[4],), False)[0]
+                return {'nombre': gerente[1], 'empresa': empresa, 'tipo': 'gerente', 'message': mensaje}
