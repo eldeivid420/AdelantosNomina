@@ -19,12 +19,12 @@ client = Client(account_sid, auth_token)
 def hello_there():
     return "General Kenobi", 200
 
-def enviar_mensaje(content_sid, content_variables=None):
+def enviar_mensaje(content_sid, celular, content_variables=None):
     client.messages.create(
         content_sid=content_sid,
         from_='whatsapp:+5215525392003',
         messaging_service_sid='MGf66cef393044e321c2b36af901e7bb8b',
-        to='whatsapp:+5215526998823',
+        to='whatsapp:'+celular,
         content_variables=content_variables)
 
 # Blueprints

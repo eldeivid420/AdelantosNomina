@@ -1,5 +1,6 @@
 from Global.Utils.db import post, get
 from json import load
+import datetime
 
 class Adelanto:
 
@@ -12,7 +13,64 @@ class Adelanto:
 
     @classmethod
     def validate_adelanto(cls,empleado):
-        pass
+
+        # obtenemos los ultimos dos adelantos para verificar que no se exceda el monto semanal maximo
+        adelantos = get('''SELECT adelanto FROM empleados_adelantos WHERE empleado = %s ORDER BY adelanto DESC LIMIT 
+        2''', (empleado["id"],), True)
+
+        # si no hay adelantos, entonces se autoriza en automatico
+        if not adelantos:
+            return 'autorizado'
+        # si solo hay un adelanto, verificamos que sea menor a 1000 para autorizarlo
+        elif len(adelantos) < 2:
+            monto = get('''SELECT monto FROM adelantos WHERE id = %s''', (adelantos[0][0],), False)[0]
+            if monto >= 1000:
+                return 'rechazado'
+            else:
+                return 'autorizado'
+
+        dates = get('''SELECT fecha FROM adelantos WHERE (id = %s) OR (id = %s)''', (adelantos[0][0], adelantos[1][0]), True)
+        ultimo_periodo = Adelanto.obtener_periodo(dates[0][0])
+        penultimo_periodo = Adelanto.obtener_periodo(dates[1][0])
+        if ultimo_periodo == penultimo_periodo:
+            montos = get('''SELECT monto FROM adelantos WHERE (id = %s) OR (id = %s)''', (adelantos[0][0], adelantos[1][0]), True)
+            if montos[0][0] + montos[1][0] >= 1000:
+                return 'rechazado'
+            else:
+                return 'autorizado'
+        else:
+            monto = get('''SELECT monto FROM adelantos WHERE id = %s''', (adelantos[0][0],), False)[0]
+            if monto >= 1000:
+                return 'rechazado'
+            else:
+                return 'autorizado'
+
+
+    @classmethod
+    def obtener_periodo(cls, date):
+        siguiente_periodo = False
+        num_semana = int(date.strftime('%U'))
+        dia_semana = date.weekday()
+        hora_dia = date.hour
+        minutos_hora = date.minute
+
+        # si es viernes, verificamos que sea antes de las 11:30, si no entonces se considera como el siguiente periodo
+        if dia_semana > 4:
+            siguiente_periodo = True
+        elif dia_semana == 4:
+            if hora_dia == 11 and minutos_hora >= 30:
+                siguiente_periodo = True
+            elif hora_dia > 11:
+                siguiente_periodo = True
+
+        # si es la ultima semana del año y se considera como siguiente periodo, entonces regresamos periodo 1
+        if num_semana == 52 and siguiente_periodo:
+            return 1
+        elif num_semana != 52 and siguiente_periodo:
+
+            return num_semana+1
+        else:
+            return num_semana
 
     @classmethod
     def exist(cls,adelanto):

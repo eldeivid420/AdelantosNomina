@@ -20,11 +20,12 @@ def incoming():
 
     if request.form["Body"][:8] == "Opcion 1":
         if request.form["Body"] != 'Opcion 1_1' and request.form["Body"] != 'Opcion 1_2':
-            enviar_mensaje('HX9cbcc1cd286f6fd37600a34826b19589')
+            enviar_mensaje('HX9cbcc1cd286f6fd37600a34826b19589', request.form["From"][9:])
         return a.opcion1()
     elif request.form["Body"] == 'Opcion 2':
         return a.opcion2()
     elif request.form["Body"] == 'Opcion 3':
-        pass
+        return a.opcion3()
     else:
+        print('asdasdsadasd')
         return a.incoming()

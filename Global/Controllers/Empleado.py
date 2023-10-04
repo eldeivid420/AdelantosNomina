@@ -1,8 +1,10 @@
 from Global.Classes.Empleado import Empleado
 from flask import request
+import json
 
 
 def create_empleado():
+    from main import enviar_mensaje
     try:
         params = {'nombre': request.json.get('nombre'),
                   'celular': request.json.get('celular'),
@@ -14,6 +16,7 @@ def create_empleado():
                   'telefono_casa': request.json.get('telefono_casa'),
                   'empresa': request.json.get('empresa')}
         empleado = Empleado(params, False)
+        enviar_mensaje('HX0e1ea052cef82ac5bcb7131a9464b213', params["celular"], content_variables=json.dumps({'1': empleado.nombre}))
         return f'El empleado: {empleado.nombre} se registró correctamente con el id: {empleado.id[0]}', 200
     except Exception as e:
         return {'error': str(e)}, 400

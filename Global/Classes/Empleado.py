@@ -21,9 +21,13 @@ class Empleado:
     def exist(cls, params):
         rfc = params['rfc']
         empresa = params['empresa']
-        registro = get('''SELECT id FROM empleados WHERE rfc = %s and empresa = %s''', (rfc, empresa), False)
+        celular = params['celular']
+        correo = params['correo']
+        registro = get('''SELECT id FROM empleados WHERE (rfc = %s and empresa = %s) OR 
+        (celular = %s AND empresa = %s) OR (correo = %s AND empresa = %s)''', (rfc, empresa, celular,
+                                                                             empresa, correo, empresa), False)
         if registro:
-            raise Exception('El rfc o el celular ya existen en la base de datos')
+            raise Exception('El rfc, celular o correo ya existen en la base de datos')
         else:
             return False
 
@@ -52,6 +56,7 @@ class Empleado:
             telefono_casa,empresa) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id''',
                            (self.nombre, self.celular, self.direccion, self.rfc, self.correo, self.numero_cuenta,
                             self.banco, self.telefono_casa, self.empresa), True)
+
 
     @classmethod
     def obtener_empleados(cls, params):
@@ -96,10 +101,10 @@ class Empleado:
     def cancelar_ultimo_adelanto(cls, params):
         # revisar si se agregan mas empresas
         empleado = get('''SELECT id FROM empleados WHERE celular = %s''',(params["celular"],), False)
-        adelanto = get('''SELECT adelanto FROM empleados_adelantos WHERE empleado = %s ORDER BY adelanto DESC''',(empleado,), False)[0]
+        adelanto = get('''SELECT adelanto FROM empleados_adelantos WHERE empleado = %s ORDER BY adelanto DESC''',(empleado,), False)
         if not adelanto:
             return 'no registros'
-        estatus = get('''SELECT estatus_adelanto FROM adelantos WHERE id = %s''', (adelanto,), False)[0]
+        estatus = get('''SELECT estatus_adelanto FROM adelantos WHERE id = %s''', (adelanto[0],), False)[0]
 
         if estatus == 'cancelado':
             return 'cancelado'
@@ -111,3 +116,20 @@ class Empleado:
         else:
             return False
 
+    @classmethod
+    def estatus_ultimo_adelanto(cls, params):
+        # revisar si se agregan mas empresas
+        empleado = get('''SELECT id FROM empleados WHERE celular = %s''',(params["celular"],), False)
+        adelanto = get('''SELECT adelanto FROM empleados_adelantos WHERE empleado = %s ORDER BY adelanto DESC''',(empleado[0],), False)
+        if not adelanto:
+            return 'no registros'
+        estatus = get('''SELECT estatus_adelanto FROM adelantos WHERE id = %s''', (adelanto[0],), False)[0]
+
+        if estatus == 'cancelado':
+            return 'cancelado'
+        elif estatus == 'pagado':
+            return 'pagado'
+        elif estatus == 'creado':
+            return 'en espera a ser depositado'
+        else:
+            return False
