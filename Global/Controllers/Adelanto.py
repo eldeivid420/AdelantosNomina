@@ -131,6 +131,6 @@ def pagar_adelanto():
 def validar_adelanto():
     try:
         params = {'id': request.json.get('id')}
-        return Adelanto.validate_adelanto(params), 200
+        return {"message": Adelanto.validate_adelanto(params)}, 200
     except Exception as e:
         return {'error': str(e)}, 400
