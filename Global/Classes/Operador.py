@@ -84,9 +84,11 @@ class Operador:
             raise Exception('No hay usuarios registrados con ese id')
         empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (registro[4],), False)[0]
         if registro[6]:
-            registro[6] = registro[6].strftime("%d/%m/%Y")
+            time = registro[6].strftime("%d/%m/%Y")
+        else:
+            time = None
         return {'id': registro[0], 'nombre': registro[1], 'username': registro[2], 'empresa': empresa,
-                'creado_en': registro[5].strftime("%d/%m/%Y"), 'editado_en': registro[6]}
+                'creado_en': registro[5].strftime("%d/%m/%Y"), 'editado_en': time}
 
     @classmethod
     def obtener_operadores(cls):
