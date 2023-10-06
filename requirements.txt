@@ -4,3 +4,4 @@ Flask
 PyJWT
 twilio
 flask_cors
+waitress

@@ -30,13 +30,22 @@ def opcion1():
 
     if monto == 'MXN $1000':
         params = {'monto': 1000, 'celular': request.form["From"][9:]}
-        adelanto = Adelanto(params, False)
-        enviar_mensaje('HXa06a2deebab5fdeaa0f3cf71fe30b351', request.form["From"][9:], content_variables=json.dumps({'1': str(adelanto.monto)}))
+        valido = Adelanto.validate_adelanto(params)
+        if valido == 'autorizado':
+            adelanto = Adelanto(params, False)
+            enviar_mensaje('HXa06a2deebab5fdeaa0f3cf71fe30b351', request.form["From"][9:], content_variables=json.dumps({'1': str(adelanto.monto)}))
+        elif valido == 'rechazado':
+            enviar_mensaje('HX8d026a1612ec6b339e46410d50a1a2be', request.form["From"][9:])
         return 'Success', 200
     elif monto == 'MXN $500':
         params = {'monto': 500, 'celular': request.form["From"][9:]}
-        adelanto = Adelanto(params, False)
-        enviar_mensaje('HXa06a2deebab5fdeaa0f3cf71fe30b351', request.form["From"][9:], content_variables=json.dumps({'1': str(adelanto.monto)}))
+        valido = Adelanto.validate_adelanto(params)
+        print(valido)
+        if valido == 'autorizado':
+            adelanto = Adelanto(params, False)
+            enviar_mensaje('HXa06a2deebab5fdeaa0f3cf71fe30b351', request.form["From"][9:], content_variables=json.dumps({'1': str(adelanto.monto)}))
+        elif valido == 'rechazado':
+            enviar_mensaje('HX8d026a1612ec6b339e46410d50a1a2be', request.form["From"][9:])
         return 'Success', 200
     else:
         return 'success', 200
@@ -130,7 +139,7 @@ def pagar_adelanto():
 
 def validar_adelanto():
     try:
-        params = {'id': request.json.get('id'),
+        params = {'celular': request.json.get('celular'),
                   'monto': request.json.get('monto')}
         return {"message": Adelanto.validate_adelanto(params)}, 200
     except Exception as e:

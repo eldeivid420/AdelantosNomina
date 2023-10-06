@@ -12,11 +12,13 @@ class Adelanto:
         self.load(params) if load else self.create(params)
 
     @classmethod
-    def validate_adelanto(cls,params):
+    def validate_adelanto(cls, params):
+        # Cambiar si hay mas empresas
+        id_empleado = get('''SELECT id FROM empleados WHERE celular = %s''', (params["celular"],), False)[0]
 
         # obtenemos los ultimos dos adelantos para verificar que no se exceda el monto semanal maximo
         adelantos = get('''SELECT adelanto FROM empleados_adelantos WHERE empleado = %s ORDER BY adelanto DESC LIMIT 
-        2''', (params["id"],), True)
+        2''', (id_empleado,), True)
 
         # si no hay adelantos, entonces se autoriza en automatico
         if not adelantos:

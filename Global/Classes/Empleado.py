@@ -76,16 +76,19 @@ class Empleado:
 
         if not registros:
             raise Exception('No hay registros en la base de datos')
-
         for i in range(len(registros)):
             banco = get('''SELECT nombre FROM bancos WHERE id = %s''', (registros[i][7],), False)[0]
             empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (registros[i][9],), False)[0]
+
             if registros[i][11]:
-                registros[i][11] = registros[i][11].strftime("%d/%m/%Y")
+                editado_en = registros[i][11].strftime("%d/%m/%Y")
+            else:
+                editado_en = None
             empleados.append({'id': registros[i][0], 'nombre': registros[i][1], 'celular': registros[i][2],
                               'direccion': registros[i][3], 'rfc': registros[i][4], 'correo': registros[i][5],
                               'numero_cuenta': registros[i][6], 'banco': banco, 'telefono_casa': registros[i][8],
-                              'empresa': empresa, 'creado_en': registros[i][10].strftime("%d/%m/%Y"), 'editado_en': registros[i][11]})
+                              'empresa': empresa, 'creado_en': registros[i][10].strftime("%d/%m/%Y"), 'editado_en': editado_en})
+
         return empleados
 
     @classmethod
@@ -133,3 +136,69 @@ class Empleado:
             return 'en espera a ser depositado'
         else:
             return False
+
+    @classmethod
+    def edit_empleado(cls, params):
+        editado = False
+        exist = get('''SELECT username FROM operadores WHERE id = %s''',(params["id"],), False)
+        if not exist:
+            raise Exception('No hay usuarios registrados con ese id')
+        # actualizar si se agregan nuevas empresas
+        empresa_actual = get('''SELECT empresa FROM empleados WHERE id = %s''', (params["id"],), False)[0]
+        if params["nombre"]:
+
+            post('''UPDATE empleados SET nombre = %s WHERE id = %s''', (params["nombre"], params["id"]))
+            editado = True
+
+        if params["celular"]:
+            registrado = get('''SELECT id FROM empleados WHERE (celular = %s AND empresa = %s)''',
+                             (params["celular"], empresa_actual))
+            if registrado:
+                raise Exception('El numero celular ya esta registrado con otro empleado')
+            else:
+                post('''UPDATE empleados SET celular = %s WHERE id = %s''', (params["celular"], params["id"]))
+                editado = True
+
+        if params["direccion"]:
+            post('''UPDATE empleados SET nombre = %s WHERE id = %s''',(params["nombre"], params["id"]))
+            editado = True
+
+        if params["rfc"]:
+            registrado = get('''SELECT id FROM empleados WHERE (rfc = %s AND empresa = %s)''',
+                             (params["rfc"], empresa_actual))
+            if registrado:
+                raise Exception('El rfc ya esta registrado con otro empleado')
+            else:
+
+                post('''UPDATE empleados SET rfc = %s WHERE id = %s''', (params["rfc"], params["id"]))
+                editado = True
+
+        if params["correo"]:
+            registrado = get('''SELECT id FROM empleados WHERE (correo = %s AND empresa = %s)''',
+                             (params["correo"], empresa_actual))
+            if registrado:
+                raise Exception('El correo ya esta registrado con otro empleado')
+            else:
+                post('''UPDATE empleados SET correo = %s WHERE id = %s''', (params["correo"], params["id"]))
+                editado = True
+
+        if params["numero_cuenta"]:
+            post('''UPDATE empleados SET numero_cuenta = %s WHERE id = %s''',(params["numero_cuenta"], params["id"]))
+            editado = True
+
+        if params["banco"]:
+            post('''UPDATE empleados SET banco = %s WHERE id = %s''',(params["banco"], params["id"]))
+            editado = True
+
+        if params["telefono_casa"]:
+            post('''UPDATE empleados SET telefono_casa = %s WHERE id = %s''',(params["telefono_casa"], params["id"]))
+            editado = True
+
+        if params["empresa"]:
+            post('''UPDATE empleados SET empresa = %s WHERE id = %s''',(params["empresa"], params["id"]))
+            editado = True
+
+        if editado:
+            post('''UPDATE empleados SET editado_en = NOW() WHERE id = %s''', (params["id"],), False)
+
+        return 'Empleado editado exitosamente'

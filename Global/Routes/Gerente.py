@@ -67,3 +67,7 @@ def eliminar_operador():
 @GLOBAL_GERENTE_BLUEPRINT.route('/validar-adelanto', methods=['POST'])
 def validar_adelanto():
     return a.validar_adelanto()
+
+@GLOBAL_GERENTE_BLUEPRINT.route('/edit-empleado', methods=['POST'])
+def edit_empleado():
+    return e.edit_empleado()
