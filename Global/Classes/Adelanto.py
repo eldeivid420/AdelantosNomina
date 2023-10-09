@@ -120,7 +120,6 @@ class Adelanto:
         for i in range(len(registros_adelanto)):
             empleado = get('''SELECT empleado FROM empleados_adelantos WHERE adelanto = %s ''', (registros_adelanto[i][0],), False)[0]
             datos_empleado = get('''SELECT id, nombre, rfc FROM empleados WHERE id = %s''', (empleado,),False)
-
             solicitudes.append({'id_adelanto': registros_adelanto[i][0], 'monto': registros_adelanto[i][1],
                                 'fecha': registros_adelanto[i][2].strftime("%d/%m/%Y"), 'estatus_adelanto': registros_adelanto[i][3],
                                 'id_empleado': datos_empleado[0], 'nombre_empleado': datos_empleado[1], 'rfc': datos_empleado[2]})

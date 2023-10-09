@@ -37,7 +37,8 @@ application.register_blueprint(GLOBAL_INCOMING_BLUEPRINT, url_prefix='/incoming'
 application.register_blueprint(GLOBAL_AUTH_BLUEPRINT, url_prefix='/auth')
 application.register_blueprint(GLOBAL_GERENTE_BLUEPRINT, url_prefix='/gerente')
 application.register_blueprint(GLOBAL_OPERADOR_BLUEPRINT, url_prefix='/operador')
-
+print('\nLa aplicación está funcionando...')
+print('\n\nNO cierre esta ventana.')
 '''from Global.Routes.Inicio import GLOBAL_INICIO_BLUEPRINT
 application.register_blueprint(GLOBAL_INICIO_BLUEPRINT, url_prefix='/inicio')'''
 

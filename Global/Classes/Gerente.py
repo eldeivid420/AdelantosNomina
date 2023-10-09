@@ -41,6 +41,7 @@ class Gerente:
             self.password = h
             self.id = post('''INSERT INTO gerentes (username,nombre,password,empresa) VALUES (%s,%s,%s,%s) RETURNING 
             id''',(self.username,self.nombre,self.password,self.empresa), True)[0]
+            post('''INSERT INTO gerentes_empresas(gerente,empresa) VALUES (%s,%s)''', (self.id, self.empresa), False)
 
     def load(self, params):
         exist = self.exist(params)
