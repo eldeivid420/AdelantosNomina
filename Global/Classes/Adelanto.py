@@ -19,7 +19,6 @@ class Adelanto:
         # obtenemos los ultimos dos adelantos para verificar que no se exceda el monto semanal maximo
         adelantos = get('''SELECT adelanto FROM empleados_adelantos WHERE empleado = %s ORDER BY adelanto DESC LIMIT 
         2''', (id_empleado,), True)
-
         # si no hay adelantos, entonces se autoriza en automatico
         if not adelantos:
             return 'autorizado'
@@ -27,6 +26,8 @@ class Adelanto:
         elif len(adelantos) < 2:
             ultimo_monto = get('''SELECT monto FROM adelantos WHERE id = %s''', (adelantos[0][0],), False)[0]
             if ultimo_monto >= 1000:
+                return 'rechazado'
+            elif ultimo_monto + params["monto"] >= 1000:
                 return 'rechazado'
             else:
                 return 'autorizado'
@@ -43,6 +44,7 @@ class Adelanto:
             if ultimo_monto >= 1000:
                 return 'rechazado'
             else:
+                print(params["monto"], ultimo_monto)
                 # verificamos que el monto solicitado mas el ultimo monto no excedan la cantidad maxima
                 if params["monto"] + ultimo_monto >= 1000:
                     return 'rechazado'

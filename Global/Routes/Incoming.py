@@ -27,5 +27,4 @@ def incoming():
     elif request.form["Body"] == 'Opcion 3':
         return a.opcion3()
     else:
-        print('asdasdsadasd')
         return a.incoming()
