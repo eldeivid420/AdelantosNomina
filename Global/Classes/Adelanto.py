@@ -109,6 +109,7 @@ class Adelanto:
         monto = params["monto"]
         estatus_adelanto = params["estatus_adelanto"]
         solicitudes = []
+        headers = ["Estatus", "Fecha", "Folio", "Monto", "Nombre", "RFC"]
 
         if monto == 'todos' and estatus_adelanto == 'todos':
             registros_adelanto = get('''SELECT * FROM adelantos ORDER BY fecha DESC''', (), True)
@@ -126,7 +127,7 @@ class Adelanto:
                                 'fecha': registros_adelanto[i][2].strftime("%d/%m/%Y"), 'estatus_adelanto': registros_adelanto[i][3],
                                 'id_empleado': datos_empleado[0], 'nombre_empleado': datos_empleado[1], 'rfc': datos_empleado[2]})
 
-        return solicitudes
+        return {"DatosTabla": solicitudes, "DatosCsv": {"headers": headers, "data": solicitudes}}
 
     @classmethod
     def pagar_adelanto(cls, params):
