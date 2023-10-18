@@ -45,7 +45,8 @@ class Ticket:
         tipo_ticket = params["tipo_ticket"]
         tipo_usuario = params["tipo_usuario"]
         tickets = []
-
+        headers = ["Asunto", "Contacto", "Descripción", "Fecha", "ID de ticket", "Forma de contacto", "Tipo de ticket",
+                   "Tipo de usuario"]
         if tipo_ticket == 'todos' and tipo_usuario == 'todos':
             registros = get('''SELECT * FROM tickets ORDER BY fecha DESC''', (), True)
         elif tipo_ticket != 'todos' and tipo_usuario == 'todos':
@@ -63,8 +64,7 @@ class Ticket:
             raise Exception('No hay registros en la base de datos')
 
         for i in range(len(registros)):
-            print(registros[i])
             tickets.append({'id': registros[i][0], 'tipo_usuario': registros[i][1], 'tipo_ticket': registros[i][2],
                             'asunto': registros[i][3], 'descripcion': registros[i][4], 'tipo_contacto': registros[i][5],
                             'contacto': registros[i][6],'fecha': registros[i][7].strftime("%d/%m/%Y")})
-        return tickets
+        return {"DatosTabla": tickets, "DatosCsv": {"headers": headers, "data": tickets}}

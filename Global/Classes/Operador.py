@@ -92,12 +92,13 @@ class Operador:
     @classmethod
     def obtener_operadores(cls):
         operadores = []
+        headers = ["Creado en", "ID de operador", "Nombre", "Usuario"]
         registros = get('''SELECT id,username,nombre,creado_en FROM operadores''', (), True)
         for i in range(len(registros)):
             #empresa = get('''SELECT nombre FROM empresas WHERE id = %s''', (registros[i][0],), False)
             operadores.append({'id': registros[i][0], 'username': registros[i][1], 'nombre': registros[i][2],
                                'creado_en': registros[i][3].strftime("%d/%m/%Y")})
-        return operadores
+        return {"DatosTabla": operadores, "DatosCsv": {"headers": headers, "data": operadores}}
 
     @classmethod
     def editar_operador(cls, params):
