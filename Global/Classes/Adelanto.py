@@ -109,7 +109,7 @@ class Adelanto:
         monto = params["monto"]
         estatus_adelanto = params["estatus_adelanto"]
         solicitudes = []
-        headers = ["Estatus", "Fecha", "Folio", "Monto", "Nombre", "RFC"]
+        headers = ["Estatus", "Fecha", "Folio", "ID del usuario", "Monto", "Nombre", "RFC"]
 
         if monto == 'todos' and estatus_adelanto == 'todos':
             registros_adelanto = get('''SELECT * FROM adelantos ORDER BY fecha DESC''', (), True)

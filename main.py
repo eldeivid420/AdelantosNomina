@@ -15,7 +15,7 @@ client = Client(account_sid, auth_token)
 
 
 # Ruta de testing
-@application.route("/")
+@application.route("/api")
 def hello_there():
     return "General Kenobi", 200
 
@@ -33,10 +33,10 @@ from Global.Routes.Auth import GLOBAL_AUTH_BLUEPRINT
 from Global.Routes.Gerente import GLOBAL_GERENTE_BLUEPRINT
 from Global.Routes.Operador import GLOBAL_OPERADOR_BLUEPRINT
 
-application.register_blueprint(GLOBAL_INCOMING_BLUEPRINT, url_prefix='/incoming')
-application.register_blueprint(GLOBAL_AUTH_BLUEPRINT, url_prefix='/auth')
-application.register_blueprint(GLOBAL_GERENTE_BLUEPRINT, url_prefix='/gerente')
-application.register_blueprint(GLOBAL_OPERADOR_BLUEPRINT, url_prefix='/operador')
+application.register_blueprint(GLOBAL_INCOMING_BLUEPRINT, url_prefix='/api/incoming')
+application.register_blueprint(GLOBAL_AUTH_BLUEPRINT, url_prefix='/api/auth')
+application.register_blueprint(GLOBAL_GERENTE_BLUEPRINT, url_prefix='/api/gerente')
+application.register_blueprint(GLOBAL_OPERADOR_BLUEPRINT, url_prefix='/api/operador')
 print('\nLa aplicación está funcionando...')
 print('\n\nNO cierre esta ventana.')
 '''from Global.Routes.Inicio import GLOBAL_INICIO_BLUEPRINT
