@@ -63,6 +63,8 @@ class Empleado:
         empleados = []
         filtro = params['filtro']
         reverse = params['reverse']
+        headers = ["Banco", "Celular", "Correo", "Creado en", "Dirección", "Editado en", "Empresa", "ID de empleado",
+                   "Nombre", "Número de cuenta", "RFC", "Teléfono de casa"]
         if filtro == 'alfabetico' and reverse == 'true':
             registros = get('''SELECT * FROM empleados ORDER BY nombre DESC''', (), True)
         elif filtro == 'alfabetico' and reverse == 'false':
@@ -89,7 +91,9 @@ class Empleado:
                               'numero_cuenta': registros[i][6], 'banco': banco, 'telefono_casa': registros[i][8],
                               'empresa': empresa, 'creado_en': registros[i][10].strftime("%d/%m/%Y"), 'editado_en': editado_en})
 
-        return empleados
+
+
+        return {"DatosTabla": empleados, "DatosCsv": {"headers": headers, "data": empleados}}
 
     @classmethod
     def detalles_empleado(cls, params):
