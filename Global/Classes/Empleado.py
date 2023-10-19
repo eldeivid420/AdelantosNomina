@@ -144,9 +144,10 @@ class Empleado:
     @classmethod
     def edit_empleado(cls, params):
         editado = False
-        exist = get('''SELECT username FROM operadores WHERE id = %s''',(params["id"],), False)
+        print(params)
+        exist = get('''SELECT nombre FROM operadores WHERE id = %s''',(params["id"],), False)
         if not exist:
-            raise Exception('No hay usuarios registrados con ese id')
+            raise Exception(f'No hay usuarios registrados con el id {exist}')
         # actualizar si se agregan nuevas empresas
         empresa_actual = get('''SELECT empresa FROM empleados WHERE id = %s''', (params["id"],), False)[0]
         if params["nombre"]:
