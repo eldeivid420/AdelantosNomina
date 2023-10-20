@@ -68,6 +68,17 @@ def edit_empleado():
                   'banco': request.json.get('banco'),
                   'telefono_casa': request.json.get('telefono_casa'),
                   'empresa': request.json.get('empresa')}
-        return {'msg': Empleado.edit_empleado(params)}
+
+        if params["celular"]:
+            from main import enviar_mensaje
+            enviar_mensaje('HX0e1ea052cef82ac5bcb7131a9464b213', params["celular"])
+        return {'msg': Empleado.edit_empleado(params)}, 200
+    except Exception as e:
+        return {'error': str(e)}, 400
+
+def eliminar_empleado():
+    try:
+        params = {'id': request.json.get('id')}
+        return {'msg': Empleado.eliminar_empleado(params)}, 200
     except Exception as e:
         return {'error': str(e)}, 400

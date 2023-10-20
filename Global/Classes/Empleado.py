@@ -144,14 +144,16 @@ class Empleado:
     @classmethod
     def edit_empleado(cls, params):
         editado = False
-        print(params)
-        exist = get('''SELECT nombre FROM operadores WHERE id = %s''',(params["id"],), False)
+        update_rfc = False
+        update_celular = False
+        update_correo = False
+        exist = get('''SELECT nombre FROM empleados WHERE id = %s''',(params["id"],), False)
         if not exist:
             raise Exception(f'No hay usuarios registrados con el id {exist}')
         # actualizar si se agregan nuevas empresas
         empresa_actual = get('''SELECT empresa FROM empleados WHERE id = %s''', (params["id"],), False)[0]
-        if params["nombre"]:
 
+        if params["nombre"]:
             post('''UPDATE empleados SET nombre = %s WHERE id = %s''', (params["nombre"], params["id"]))
             editado = True
 
@@ -161,7 +163,7 @@ class Empleado:
             if registrado:
                 raise Exception('El numero celular ya esta registrado con otro empleado')
             else:
-                post('''UPDATE empleados SET celular = %s WHERE id = %s''', (params["celular"], params["id"]))
+                update_celular = True
                 editado = True
 
         if params["direccion"]:
@@ -174,8 +176,7 @@ class Empleado:
             if registrado:
                 raise Exception('El rfc ya esta registrado con otro empleado')
             else:
-
-                post('''UPDATE empleados SET rfc = %s WHERE id = %s''', (params["rfc"], params["id"]))
+                update_rfc = True
                 editado = True
 
         if params["correo"]:
@@ -184,7 +185,7 @@ class Empleado:
             if registrado:
                 raise Exception('El correo ya esta registrado con otro empleado')
             else:
-                post('''UPDATE empleados SET correo = %s WHERE id = %s''', (params["correo"], params["id"]))
+                update_correo = True
                 editado = True
 
         if params["numero_cuenta"]:
@@ -203,7 +204,24 @@ class Empleado:
             post('''UPDATE empleados SET empresa = %s WHERE id = %s''',(params["empresa"], params["id"]))
             editado = True
 
+        if update_celular:
+            post('''UPDATE empleados SET celular = %s WHERE id = %s''', (params["celular"], params["id"]))
+        if update_correo:
+            post('''UPDATE empleados SET correo = %s WHERE id = %s''', (params["correo"], params["id"]))
+        if update_rfc:
+            post('''UPDATE empleados SET rfc = %s WHERE id = %s''', (params["rfc"], params["id"]))
+
         if editado:
             post('''UPDATE empleados SET editado_en = NOW() WHERE id = %s''', (params["id"],), False)
 
         return 'Empleado editado exitosamente'
+
+    @classmethod
+    def eliminar_empleado(cls, params):
+        exist = get('''SELECT nombre FROM empleados WHERE id = %s''',(params["id"],), False)
+        if not exist:
+            raise Exception(f'No hay usuarios registrados con el id {params["id"]}')
+        post('''DELETE FROM empleados WHERE id = %s''', (params["id"],), False)
+        post('''DELETE FROM empleados_adelantos WHERE empleado = %s''', (params["id"],), False)
+        return 'Empleado eliminado exitosamente'
+

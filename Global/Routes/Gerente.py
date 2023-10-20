@@ -71,3 +71,8 @@ def validar_adelanto():
 @GLOBAL_GERENTE_BLUEPRINT.route('/edit-empleado', methods=['POST'])
 def edit_empleado():
     return e.edit_empleado()
+
+
+'''@GLOBAL_GERENTE_BLUEPRINT.route('/eliminar-empleado', methods=['POST'])
+def eliminar_empleado():
+    return e.eliminar_empleado()'''
