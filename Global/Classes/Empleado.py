@@ -1,5 +1,6 @@
 from Global.Utils.db import post, get
 from json import load
+import json
 
 
 class Empleado:
@@ -159,12 +160,19 @@ class Empleado:
 
         if params["celular"]:
             registrado = get('''SELECT id FROM empleados WHERE (celular = %s AND empresa = %s)''',
-                             (params["celular"], empresa_actual))
-            if registrado:
-                raise Exception('El numero celular ya esta registrado con otro empleado')
-            else:
+                             (params["celular"], empresa_actual), False)
+
+            if not registrado:
+                print('NO REGISTRADO')
                 update_celular = True
                 editado = True
+            elif registrado[0] != params["id"]:
+                raise Exception('El celular ya esta registrado con otro empleado')
+            elif registrado[0] == params["id"]:
+                print('ES DEL USUARIO')
+                update_correo = False
+                editado = True
+
 
         if params["direccion"]:
             post('''UPDATE empleados SET nombre = %s WHERE id = %s''',(params["nombre"], params["id"]))
@@ -172,20 +180,31 @@ class Empleado:
 
         if params["rfc"]:
             registrado = get('''SELECT id FROM empleados WHERE (rfc = %s AND empresa = %s)''',
-                             (params["rfc"], empresa_actual))
-            if registrado:
-                raise Exception('El rfc ya esta registrado con otro empleado')
-            else:
+                             (params["rfc"], empresa_actual),False)
+            if not registrado:
+                print('NO REGISTRADO')
                 update_rfc = True
+                editado = True
+            elif registrado[0] != params["id"]:
+                raise Exception('El RFC ya esta registrado con otro empleado')
+            elif registrado[0] == params["id"]:
+                print('ES DEL USUARIO')
+                update_correo = False
                 editado = True
 
         if params["correo"]:
             registrado = get('''SELECT id FROM empleados WHERE (correo = %s AND empresa = %s)''',
-                             (params["correo"], empresa_actual))
-            if registrado:
-                raise Exception('El correo ya esta registrado con otro empleado')
-            else:
+                             (params["correo"], empresa_actual), False)
+
+            if not registrado:
+                print('NO REGISTRADO')
                 update_correo = True
+                editado = True
+            if registrado[0] != params["id"]:
+                raise Exception('El correo ya esta registrado con otro empleado')
+            elif registrado[0] == params["id"]:
+                print('ES DEL USUARIO')
+                update_correo = False
                 editado = True
 
         if params["numero_cuenta"]:
@@ -204,8 +223,7 @@ class Empleado:
             post('''UPDATE empleados SET empresa = %s WHERE id = %s''',(params["empresa"], params["id"]))
             editado = True
 
-        if update_celular:
-            post('''UPDATE empleados SET celular = %s WHERE id = %s''', (params["celular"], params["id"]))
+
         if update_correo:
             post('''UPDATE empleados SET correo = %s WHERE id = %s''', (params["correo"], params["id"]))
         if update_rfc:
@@ -213,6 +231,11 @@ class Empleado:
 
         if editado:
             post('''UPDATE empleados SET editado_en = NOW() WHERE id = %s''', (params["id"],), False)
+
+        if update_celular:
+            post('''UPDATE empleados SET celular = %s WHERE id = %s''', (params["celular"], params["id"]))
+            from main import enviar_mensaje
+            enviar_mensaje('HX0e1ea052cef82ac5bcb7131a9464b213', params["celular"], content_variables=json.dumps({'1': str(exist[0])}))
 
         return 'Empleado editado exitosamente'
 
