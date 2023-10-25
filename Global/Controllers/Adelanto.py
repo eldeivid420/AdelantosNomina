@@ -13,16 +13,8 @@ def incoming():
         if not registrado:
             enviar_mensaje('HX5f799704caf07549cb25ce94026c01ce', request.form["From"][9:])
             return 'Error', 200
-        params = {'celular': request.form["From"][9:]}
-        empleado = Empleado.obtener_id(params)
-        tyc = Empleado.check_tyc(empleado)
-        if not tyc:
-            enviar_mensaje('HX952867a59c360f0c3a3ad9b1ec118f06', request.form["From"][9:],
-                           content_variables=json.dumps({'1': str(empleado)}))
-            return 'Error', 200
-        elif tyc:
-            enviar_mensaje('HXb37aad21bf9a99f68ab2a9c105caaf26', request.form["From"][9:])
-            return 'Success', 200
+        enviar_mensaje('HXb37aad21bf9a99f68ab2a9c105caaf26', request.form["From"][9:])
+        return 'Success', 200
     except Exception as e:
         return {'error': str(e)}, 400
 
@@ -108,7 +100,6 @@ def opcion3():
     else:
         return 'success', 200
 
-
 def opcion4():
     from main import enviar_mensaje
     resp = MessagingResponse()
@@ -121,9 +112,8 @@ def opcion4():
     if opcion == 'Términos y condiciones':
         params = {'celular': request.form["From"][9:]}
         empleado = Empleado.obtener_id(params)
-        print(empleado)
         enviar_mensaje('HX80196b9f0ea386aa268b8d61bb4f7636', request.form["From"][9:],
-                       content_variables=json.dumps({'1': str(empleado)}))
+                       content_variables=json.dumps({'1': empleado}))
         return 'success', 200
     else:
         return 'success', 200

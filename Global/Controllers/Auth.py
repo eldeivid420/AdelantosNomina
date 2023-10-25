@@ -2,7 +2,6 @@ from flask import request
 from Global.Classes.Operador import Operador
 from Global.Classes.Gerente import Gerente
 from Global.Classes.Auth import Auth
-from Global.Classes.Empleado import Empleado
 
 
 def login():
@@ -34,10 +33,3 @@ def validate_session():
         return {'error': str(e)}, 400
 
 
-def aceptar_tyc():
-    try:
-        params = {'id': request.json.get('id')}
-        aceptado = Empleado.aceptar_tyc(params)
-        return {'msg': aceptado}, 200
-    except Exception as e:
-        return {'error': str(e)}, 400
