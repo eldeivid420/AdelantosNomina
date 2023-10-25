@@ -187,9 +187,13 @@ class Empleado:
 
     @classmethod
     def aceptar_tyc(cls, params):
-        empleado_id = get('''SELECT id FROM empleados WHERE celular = %s''', (params["celular"],), False)[0]
+        empleado_id = get('''SELECT id FROM empleados WHERE id = %s''', (params["id"],), False)[0]
         if not empleado_id:
             raise Exception(f'No hay usuarios registrados con el id {params["id"]}')
-        tyc = post('''UPDATE empleados SET terminos_aceptados = %s WHERE id = %s RETURNING terminos_aceptados''',
-                   (params["tyc"], empleado_id), False)[0][0]
-        print(tyc)
+        tyc = post('''UPDATE empleados SET terminos_aceptados = true WHERE id = %s''', (empleado_id,), False)
+        return 'Terminos y condiciones aceptadas'
+
+    @classmethod
+    def check_tyc(cls, empleado):
+        tyc = get('''SELECT terminos_aceptados FROM empleados WHERE id = %s''', (empleado,), False)[0]
+        return tyc

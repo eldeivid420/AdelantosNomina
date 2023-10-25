@@ -32,7 +32,7 @@ CREATE TABLE public.empleados
    empresa INT,
    creado_en TIMESTAMP NOT NULL DEFAULT NOW(),
    editado_en TIMESTAMP,
-   terminos_aceptados BOOL NOT NULL DEFAULT true,
+   terminos_aceptados BOOL NOT NULL DEFAULT false,
    CONSTRAINT pk_usuario PRIMARY KEY(id),
    CONSTRAINT fk_bancos FOREIGN KEY(banco) REFERENCES public.bancos(id),
    CONSTRAINT fk_empresas FOREIGN KEY(empresa) REFERENCES public.empresas(id),
