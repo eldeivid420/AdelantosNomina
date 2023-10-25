@@ -180,7 +180,7 @@ class Empleado:
         post('''DELETE FROM empleados_adelantos WHERE empleado = %s''', (params["id"],), False)
         return 'Empleado eliminado exitosamente'
 
-"""    @classmethod
+    @classmethod
     def obtener_id(cls, params):
         empleado_id = get('''SELECT id FROM empleados WHERE celular = %s''', (params["celular"],), False)[0]
         return empleado_id
@@ -196,4 +196,4 @@ class Empleado:
     @classmethod
     def check_tyc(cls, empleado):
         tyc = get('''SELECT terminos_aceptados FROM empleados WHERE id = %s''', (empleado,), False)[0]
-        return tyc"""
+        return tyc

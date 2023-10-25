@@ -26,5 +26,7 @@ def incoming():
         return a.opcion2()
     elif request.form["Body"] == 'Opcion 3':
         return a.opcion3()
+    elif request.form["Body"] == 'Opcion 4':
+        return a.opcion4()
     else:
         return a.incoming()
