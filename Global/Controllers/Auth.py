@@ -31,3 +31,5 @@ def validate_session():
         return Auth.validar_token(token), 200
     except Exception as e:
         return {'error': str(e)}, 400
+
+

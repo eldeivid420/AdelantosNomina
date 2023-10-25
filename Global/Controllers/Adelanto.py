@@ -13,7 +13,7 @@ def incoming():
         if not registrado:
             enviar_mensaje('HX5f799704caf07549cb25ce94026c01ce', request.form["From"][9:])
             return 'Error', 200
-        enviar_mensaje('HXbbfc4a72c7fac46712b686e317766799', request.form["From"][9:])
+        enviar_mensaje('HXb37aad21bf9a99f68ab2a9c105caaf26', request.form["From"][9:])
         return 'Success', 200
     except Exception as e:
         return {'error': str(e)}, 400
@@ -100,7 +100,23 @@ def opcion3():
     else:
         return 'success', 200
 
+def opcion4():
+    from main import enviar_mensaje
+    resp = MessagingResponse()
 
+    opcion = request.form["ListTitle"]
+    if opcion == "Salir":
+        resp.message("Gracias por usar nuestro servicio")
+        return str(resp), 200
+
+    if opcion == 'Términos y condiciones':
+        params = {'celular': request.form["From"][9:]}
+        empleado = Empleado.obtener_id(params)
+        enviar_mensaje('HX80196b9f0ea386aa268b8d61bb4f7636', request.form["From"][9:],
+                       content_variables=json.dumps({'1': empleado}))
+        return 'success', 200
+    else:
+        return 'success', 200
 
 
 def crear_adelanto():
