@@ -179,6 +179,7 @@ class Empleado:
         post('''DELETE FROM empleados WHERE id = %s''', (params["id"],), False)
         post('''DELETE FROM empleados_adelantos WHERE empleado = %s''', (params["id"],), False)
         return 'Empleado eliminado exitosamente'
+<<<<<<< HEAD
 
     @classmethod
     def obtener_id(cls, params):
@@ -197,3 +198,5 @@ class Empleado:
     def check_tyc(cls, empleado):
         tyc = get('''SELECT terminos_aceptados FROM empleados WHERE id = %s''', (empleado,), False)[0]
         return tyc
+=======
+>>>>>>> parent of 6ee8c74 (Update opcion tyc)
