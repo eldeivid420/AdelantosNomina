@@ -40,4 +40,3 @@ def aceptar_tyc():
         return {'msg': aceptado}, 200
     except Exception as e:
         return {'error': str(e)}, 400
-    
