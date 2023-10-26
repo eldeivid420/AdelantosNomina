@@ -46,6 +46,7 @@ CREATE TABLE public.adelantos
   id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
   monto FLOAT NOT NULL,
   fecha TIMESTAMP NOT NULL DEFAULT NOW(),
+  fecha_pago TIMESTAMP,
   estatus_adelanto estatus_adelanto NOT NULL,
   CONSTRAINT pk_adelantos PRIMARY KEY (id)
  );

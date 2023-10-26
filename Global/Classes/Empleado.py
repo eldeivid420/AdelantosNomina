@@ -61,6 +61,12 @@ class Empleado:
                            (self.nombre, self.celular, self.direccion, self.rfc, self.correo, self.numero_cuenta,
                             self.banco, self.telefono_casa, self.empresa), True)
 
+    def load(self, params):
+        self.id = params["id"]
+        self.nombre, self.celular, self.direccion, self.rfc, self.correo, self.numero_cuenta, self.banco, self.telefono_casa = get(
+            '''SELECT nombre,celular,direccion,rfc,correo,numero_cuenta,banco,telefono_casa FROM empleados WHERE id = 
+            %s''', (self.id,), False)
+        return self
     @classmethod
     def obtener_empleados(cls, params):
         empleados = []

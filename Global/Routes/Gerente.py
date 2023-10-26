@@ -72,6 +72,9 @@ def validar_adelanto():
 def edit_empleado():
     return e.edit_empleado()
 
+@GLOBAL_GERENTE_BLUEPRINT.route('/generar-reporte', methods=['POST'])
+def generar_reporte():
+    return g.generar_reporte()
 
 '''@GLOBAL_GERENTE_BLUEPRINT.route('/eliminar-empleado', methods=['POST'])
 def eliminar_empleado():

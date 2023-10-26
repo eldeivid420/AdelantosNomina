@@ -90,3 +90,76 @@ class Gerente:
             bancos.append({'id': registros[i][0], 'nombre': registros[i][1]})
 
         return bancos
+
+    @classmethod
+    def generar_reporte(cls, params):
+        headers = ["# Contrato", "Banco", "Comision Bancaria", "Empresa", "Fecha Deposito", "Fecha Solicitud",
+                   "Gastos Adm. Interes", "IVA", "Nombre Empleado", "Numero Cuenta", "RFC", "Solicitado",
+                   "Sub. Total", "Transferencia"]
+        solicitudes = []
+        primero = True
+        query = '''select t3.nombre as nombre_empleado, t3.rfc, em.nombre as nombre_empresa, t3.id_adelanto, 
+        t3.fecha, t3.fecha_pago,  t3.numero_cuenta, t3.nombre_banco, t3.monto from ( select t2.*, b.nombre as nombre_banco from ( select 
+        t1.nombre, t1.rfc, t1.numero_cuenta, t1.banco, t1.empresa, a.id as id_adelanto, a.monto, a.fecha, a.fecha_pago from 
+        adelantos a inner join (select e.id, e.nombre,e.rfc,e.numero_cuenta,e.banco,e.empresa, ea.adelanto from 
+        empleados e inner join empleados_adelantos ea on e.id = ea.empleado) t1 on a.id = t1.adelanto) t2 inner join 
+        bancos b on b.id = t2.banco) t3 inner join empresas em on em.id = t3.empresa '''
+
+        if params["empresas"]:
+            empresas = "','".join(params["empresas"])
+            query += f"where em.nombre in ('{empresas}')"
+            primero = False
+
+        if params["montos"]:
+            montos = ",".join(params["montos"])
+            if primero:
+                query += f"where t3.monto in ({montos})"
+                primero = False
+            elif not primero:
+                query += f"and t3.monto in ({montos})"
+
+        if params["bancos"]:
+            bancos = "','".join(params["bancos"])
+            if primero:
+                query += f"where t3.nombre_banco in ('{bancos}')"
+                primero = False
+            elif not primero:
+                query += f"and t3.nombre_banco in ('{bancos}')"
+
+        if params["fechas"]:
+            fecha_inicio = params["fechas"][0]
+            fecha_fin = params["fechas"][1]
+            if primero:
+                query += f"where TO_CHAR(t3.fecha,'DD/MM/YYYY')  between '{fecha_inicio}' and '{fecha_fin}' "
+            elif not primero:
+                query += f"and TO_CHAR(t3.fecha,'DD/MM/YYYY')  between '{fecha_inicio}' and '{fecha_fin}' "
+
+        query += f"order by t3.fecha desc"
+
+        registro = get(query, (), True)
+        print(registro)
+        for i in range(len(registro)):
+            comisiones = cls.calcular_comisiones(registro[i][8])
+            solicitudes.append({"empleado": registro[i][0], "rfc": registro[i][1], "empresa": registro[i][2],
+                                "id_adelanto": registro[i][3], "fecha": registro[i][4], "fecha_pago": registro[i][5],
+                                "numero_cuenta": registro[i][6], "nombre_banco": registro[i][7],
+                                "solicitado": f'${comisiones[0]}', "gastos_admin": comisiones[1],
+                                "comision_bancaria": comisiones[2], "subtotal": comisiones[3], "iva": comisiones[4],
+                                "transferencia": comisiones[5]})
+
+        return {"DatosTabla": solicitudes, "DatosCsv": {"headers": headers, "data": solicitudes}}
+    @classmethod
+    def calcular_comisiones(cls, monto):
+        solicitado = round(monto, 2)
+        comision_bancaria = 5.80
+        if solicitado == 1000.00:
+            gastos_admin = 60.00
+        elif solicitado == 500.00:
+            gastos_admin = 40.00
+        else:
+            gastos_admin = 0.00
+        subtotal = round(gastos_admin + comision_bancaria, 2)
+        iva = round(subtotal*0.16, 2)
+        transferecia = round(solicitado-(subtotal+iva),2)
+        comisiones = [solicitado, gastos_admin, comision_bancaria, subtotal, iva, transferecia]
+        return comisiones

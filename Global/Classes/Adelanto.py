@@ -92,8 +92,13 @@ class Adelanto:
         self.id = post('''INSERT INTO adelantos(monto,estatus_adelanto) VALUES (%s,'creado') RETURNING id''', (self.monto,), True)[0]
         post('''INSERT INTO empleados_adelantos(empleado,adelanto) VALUES (%s,%s)''', (empleado, self.id), False)
 
-    def load(self):
-        pass
+    def load(self, params):
+        self.id = params["id"]
+        if self.exist(self.id):
+            self.monto, self.fecha, self.estatus = get('''SELECT monto,fecha,estatus_adelanto FROM adelantos WHERE id = 
+            %s''', (self.id,), False)
+            return self
+
 
     @classmethod
     def cancelar_solicitud(cls, params):
