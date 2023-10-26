@@ -93,9 +93,9 @@ class Gerente:
 
     @classmethod
     def generar_reporte(cls, params):
-        headers = ["Comision Bancaria", "Nombre Empleado", "Empresa", "Fecha Solicitud", "Fecha Deposito",
-                   "Gastos Adm. Interes", "# Contrato", "IVA", "Banco", "Numero Cuenta", "RFC", "Solicitado",
-                   "Sub. Total", "Transferencia"]
+        headers = ["Nombre Empleado", "RFC", "Empresa", "# Contrato", "Fecha Solicitud", "Fecha Deposito",
+                   "Numero Cuenta", "Banco", "Solicitado", "Gastos Adm. Interes", "Comision Bancaria",
+                   "Sub. Total", "IVA", "Transferencia"]
         solicitudes = []
         primero = True
         query = '''select t3.nombre as nombre_empleado, t3.rfc, em.nombre as nombre_empresa, t3.id_adelanto, 
@@ -144,12 +144,12 @@ class Gerente:
             else:
                 fecha_pago = None
             comisiones = cls.calcular_comisiones(registro[i][8])
-            solicitudes.append({"empleado": registro[i][0], "rfc": registro[i][1], "empresa": registro[i][2],
-                                "id_adelanto": registro[i][3], "fecha": registro[i][4].strftime("%d/%m/%Y"), "fecha_pago": fecha_pago,
-                                "numero_cuenta": registro[i][6], "nombre_banco": registro[i][7],
-                                "solicitado": comisiones[0], "gastos_admin": comisiones[1],
-                                "comision_bancaria": comisiones[2], "subtotal": comisiones[3], "iva": comisiones[4],
-                                "transferencia": comisiones[5]})
+            solicitudes.append({"a_empleado": registro[i][0], "b_rfc": registro[i][1], "c_empresa": registro[i][2],
+                                "d_id_adelanto": registro[i][3], "e_fecha": registro[i][4].strftime("%d/%m/%Y"), "f_fecha_pago": fecha_pago,
+                                "g_numero_cuenta": registro[i][6], "h_nombre_banco": registro[i][7],
+                                "i_solicitado": comisiones[0], "j_gastos_admin": comisiones[1],
+                                "k_comision_bancaria": comisiones[2], "l_subtotal": comisiones[3], "m_iva": comisiones[4],
+                                "n_transferencia": comisiones[5]})
 
         return {"DatosTabla": solicitudes, "DatosCsv": {"headers": headers, "data": solicitudes}}
     @classmethod
