@@ -93,8 +93,8 @@ class Gerente:
 
     @classmethod
     def generar_reporte(cls, params):
-        headers = ["# Contrato", "Banco", "Comision Bancaria", "Empresa", "Fecha Deposito", "Fecha Solicitud",
-                   "Gastos Adm. Interes", "IVA", "Nombre Empleado", "Numero Cuenta", "RFC", "Solicitado",
+        headers = ["Comision Bancaria", "Nombre Empleado", "Empresa", "Fecha Solicitud", "Fecha Deposito",
+                   "Gastos Adm. Interes", "# Contrato", "IVA", "Banco", "Numero Cuenta", "RFC", "Solicitado",
                    "Sub. Total", "Transferencia"]
         solicitudes = []
         primero = True
@@ -137,13 +137,17 @@ class Gerente:
         query += f"order by t3.fecha desc"
 
         registro = get(query, (), True)
-        print(registro)
+
         for i in range(len(registro)):
+            if registro[i][5]:
+                fecha_pago = registro[i][5].strftime("%d/%m/%Y")
+            else:
+                fecha_pago = None
             comisiones = cls.calcular_comisiones(registro[i][8])
             solicitudes.append({"empleado": registro[i][0], "rfc": registro[i][1], "empresa": registro[i][2],
-                                "id_adelanto": registro[i][3], "fecha": registro[i][4], "fecha_pago": registro[i][5],
+                                "id_adelanto": registro[i][3], "fecha": registro[i][4].strftime("%d/%m/%Y"), "fecha_pago": fecha_pago,
                                 "numero_cuenta": registro[i][6], "nombre_banco": registro[i][7],
-                                "solicitado": f'${comisiones[0]}', "gastos_admin": comisiones[1],
+                                "solicitado": comisiones[0], "gastos_admin": comisiones[1],
                                 "comision_bancaria": comisiones[2], "subtotal": comisiones[3], "iva": comisiones[4],
                                 "transferencia": comisiones[5]})
 
@@ -160,6 +164,6 @@ class Gerente:
             gastos_admin = 0.00
         subtotal = round(gastos_admin + comision_bancaria, 2)
         iva = round(subtotal*0.16, 2)
-        transferecia = round(solicitado-(subtotal+iva),2)
+        transferecia = round(solicitado-(subtotal+iva), 2)
         comisiones = [solicitado, gastos_admin, comision_bancaria, subtotal, iva, transferecia]
         return comisiones
