@@ -49,6 +49,7 @@ class Empleado:
         self.numero_cuenta = params['numero_cuenta']
         self.banco = params['banco']
         self.telefono_casa = params['telefono_casa']
+        self.empresa = 1
         '''if not params["empresa"]:
             self.empresa = 1
         else:
