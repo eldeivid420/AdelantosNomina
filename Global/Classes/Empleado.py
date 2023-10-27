@@ -21,7 +21,7 @@ class Empleado:
     @classmethod
     def exist(cls, params):
         rfc = params['rfc']
-        empresa = params['empresa']
+        empresa = 1
         celular = params['celular']
         correo = params['correo']
         registro = get('''SELECT id FROM empleados WHERE (rfc = %s and empresa = %s) OR 
