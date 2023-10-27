@@ -73,9 +73,26 @@ def edit_empleado():
     except Exception as e:
         return {'error': str(e)}, 400
 
+
 def eliminar_empleado():
     try:
         params = {'id': request.json.get('id')}
         return {'msg': Empleado.eliminar_empleado(params)}, 200
+    except Exception as e:
+        return {'error': str(e)}, 400
+
+
+def subir_empleados_bulk():
+    try:
+        empleados = 0
+        from main import enviar_mensaje
+        params = {"empleados": request.json.get('empleados')}
+        for i in range(len(params["empleados"])):
+
+            empleado = Empleado(params["empleados"][i], False)
+            enviar_mensaje('HX0e1ea052cef82ac5bcb7131a9464b213', params["empleados"][i]["celular"],
+                           content_variables=json.dumps({'1': empleado.nombre}))
+            empleados += 1
+        return {'msg': f'Se registraron {empleados} empleados'}, 200
     except Exception as e:
         return {'error': str(e)}, 400
