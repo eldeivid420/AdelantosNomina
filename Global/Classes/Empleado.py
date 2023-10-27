@@ -5,7 +5,7 @@ import json
 
 class Empleado:
 
-    def __init__(self, params, load=True):
+    def __init__(self, params, load=True, varios=False):
         self.id = None
         self.nombre = None
         self.celular = None
@@ -16,10 +16,12 @@ class Empleado:
         self.banco = None
         self.telefono_casa = None
         self.empresa = 1
+        self.varios = varios
+        self.error = False
         self.load(params) if load else self.create(params)
 
     @classmethod
-    def exist(cls, params):
+    def exist(cls, params, varios):
         rfc = params['rfc']
         empresa = 1
         celular = params['celular']
@@ -27,8 +29,10 @@ class Empleado:
         registro = get('''SELECT id FROM empleados WHERE (rfc = %s and empresa = %s) OR 
         (celular = %s AND empresa = %s) OR (correo = %s AND empresa = %s)''', (rfc, empresa, celular,
                                                                                empresa, correo, empresa), False)
-        if registro:
+        if registro and not varios:
             raise Exception('El rfc, celular o correo ya existen en la base de datos')
+        elif registro and varios:
+            return True
         else:
             return False
 
@@ -50,17 +54,24 @@ class Empleado:
         self.banco = params['banco']
         self.telefono_casa = params['telefono_casa']
         self.empresa = 1
+
         '''if not params["empresa"]:
             self.empresa = 1
         else:
             self.empresa = params['empresa']'''
+        exist = self.exist(params, self.varios)
 
         # Si el usuario no existe, lo creamos
-        if not self.exist(params):
+        if not exist:
             self.id = post('''INSERT INTO empleados (nombre,celular,direccion,rfc,correo,numero_cuenta,banco,
             telefono_casa,empresa) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id''',
                            (self.nombre, self.celular, self.direccion, self.rfc, self.correo, self.numero_cuenta,
                             self.banco, self.telefono_casa, self.empresa), True)
+
+        elif exist:
+            banco = get('''SELECT nombre FROM bancos WHERE id = %s''', (self.banco,), False)
+            self.banco = banco[0]
+            self.error = True
 
     def load(self, params):
         self.id = params["id"]

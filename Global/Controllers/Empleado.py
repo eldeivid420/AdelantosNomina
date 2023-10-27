@@ -83,14 +83,24 @@ def eliminar_empleado():
 def subir_empleados_bulk():
     try:
         empleados = 0
+        errores = []
         from main import enviar_mensaje
         params = {"empleados": request.json.get('empleados')}
         for i in range(len(params["empleados"])):
 
-            empleado = Empleado(params["empleados"][i], False)
-            enviar_mensaje('HX0e1ea052cef82ac5bcb7131a9464b213', params["empleados"][i]["celular"],
-                           content_variables=json.dumps({'1': empleado.nombre}))
-            empleados += 1
-        return {'msg': f'Se registraron {empleados} empleados'}, 200
+            empleado = Empleado(params["empleados"][i], False, True)
+            if empleado.error:
+                errores.append({'a_nombre': empleado.nombre, 'b_celular': empleado.celular, 'c_direccion': empleado.direccion,
+                                'd_rfc': empleado.rfc, 'e_correo': empleado.correo, 'f_numero_cuenta': empleado.numero_cuenta,
+                                'g_banco': empleado.banco, 'h_telefono_casa': empleado.telefono_casa})
+            else:
+                enviar_mensaje('HX0e1ea052cef82ac5bcb7131a9464b213', params["empleados"][i]["celular"],
+                               content_variables=json.dumps({'1': empleado.nombre}))
+                empleados += 1
+        if len(errores) == 0:
+            return {'msg': f'Se registraron {empleados} empleados correctamente'}, 200
+        else:
+            headers = ['Nombre', 'Celular', 'Dirección', 'RFC', 'Correo', 'Número de Cuenta', 'Banco', 'Teléfono de Casa']
+            return {'exitoso': f'Se registraron {empleados} empleados correctamente', 'errores': errores, 'headers': headers}, 200
     except Exception as e:
         return {'error': str(e)}, 400
