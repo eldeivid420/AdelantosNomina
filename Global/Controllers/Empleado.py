@@ -65,8 +65,7 @@ def edit_empleado():
                   'correo': request.json.get('correo'),
                   'numero_cuenta': request.json.get('numero_cuenta'),
                   'banco': request.json.get('banco'),
-                  'telefono_casa': request.json.get('telefono_casa'),
-                  'empresa': request.json.get('empresa')}
+                  'telefono_casa': request.json.get('telefono_casa')}
 
         return {'msg': Empleado.edit_empleado(params)}, 200
     except Exception as e:
