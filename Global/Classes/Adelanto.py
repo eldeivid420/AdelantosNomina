@@ -27,7 +27,7 @@ class Adelanto:
             ultimo_monto = get('''SELECT monto FROM adelantos WHERE id = %s''', (adelantos[0][0],), False)[0]
             if ultimo_monto >= 1000:
                 return 'rechazado'
-            elif ultimo_monto + params["monto"] >= 1000:
+            elif ultimo_monto + params["monto"] > 1000:
                 return 'rechazado'
             else:
                 return 'autorizado'
@@ -44,7 +44,6 @@ class Adelanto:
             if ultimo_monto >= 1000:
                 return 'rechazado'
             else:
-                print(params["monto"], ultimo_monto)
                 # verificamos que el monto solicitado mas el ultimo monto no excedan la cantidad maxima
                 if params["monto"] + ultimo_monto >= 1000:
                     return 'rechazado'

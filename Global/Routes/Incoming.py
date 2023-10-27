@@ -10,6 +10,7 @@ GLOBAL_INCOMING_BLUEPRINT = Blueprint('GLOBAL_INCOMING_BLUEPRINT', __name__)
 
 @GLOBAL_INCOMING_BLUEPRINT.route('', methods=['POST'])
 def incoming():
+    #print(request.form)
     from main import enviar_mensaje
     if request.form["Body"] == "Sí":
         return a.incoming()
@@ -19,7 +20,8 @@ def incoming():
         return str(resp), 200
 
     if request.form["Body"][:8] == "Opcion 1":
-        if request.form["Body"] != 'Opcion 1_1' and request.form["Body"] != 'Opcion 1_2':
+        if (request.form["Body"] != 'Opcion 1_1' and request.form["Body"] != 'Opcion 1_2' and request.form["Body"] !=
+                "Opcion 1_a500" and request.form["Body"] != "Opcion 1_a1000" and request.form["Body"] != "Opcion 1_n"):
             enviar_mensaje('HX9cbcc1cd286f6fd37600a34826b19589', request.form["From"][9:])
         return a.opcion1()
     elif request.form["Body"] == 'Opcion 2':

@@ -33,7 +33,6 @@ def incoming():
 def opcion1():
     from main import enviar_mensaje
     resp = MessagingResponse()
-
     monto = request.form["ListTitle"]
     if monto == "Salir":
         resp.message("Gracias por usar nuestro servicio")
@@ -43,23 +42,41 @@ def opcion1():
         params = {'monto': 1000, 'celular': request.form["From"][9:]}
         valido = Adelanto.validate_adelanto(params)
         if valido == 'autorizado':
-            adelanto = Adelanto(params, False)
-            enviar_mensaje('HXa06a2deebab5fdeaa0f3cf71fe30b351', request.form["From"][9:], content_variables=json.dumps({'1': str(adelanto.monto)}))
+            enviar_mensaje('HXd9dce63775be2c311a1d89920b4806dc', request.form["From"][9:],
+                           content_variables=json.dumps({'1': str(1000), '2': str(60), '3': str(10.53), '4': str(923.67)}))
         elif valido == 'rechazado':
             enviar_mensaje('HX8d026a1612ec6b339e46410d50a1a2be', request.form["From"][9:])
         return 'Success', 200
+
     elif monto == 'MXN $500':
         params = {'monto': 500, 'celular': request.form["From"][9:]}
         valido = Adelanto.validate_adelanto(params)
-        print(valido)
         if valido == 'autorizado':
-            adelanto = Adelanto(params, False)
-            enviar_mensaje('HXa06a2deebab5fdeaa0f3cf71fe30b351', request.form["From"][9:], content_variables=json.dumps({'1': str(adelanto.monto)}))
+            enviar_mensaje('HX7058906d8b763f6ffaa7e1c5560f5e89', request.form["From"][9:],
+                           content_variables=json.dumps(
+                               {'1': str(500), '2': str(40), '3': str(7.33), '4': str(446.87)}))
         elif valido == 'rechazado':
             enviar_mensaje('HX8d026a1612ec6b339e46410d50a1a2be', request.form["From"][9:])
         return 'Success', 200
+
+    elif request.form["Body"] == 'Opcion 1_a1000':
+        params = {'monto': 1000, 'celular': request.form["From"][9:]}
+        adelanto = Adelanto(params, False)
+        enviar_mensaje('HXa06a2deebab5fdeaa0f3cf71fe30b351', request.form["From"][9:],
+                       content_variables=json.dumps({'1': str(adelanto.monto)}))
+        return 'Success', 200
+
+    elif request.form["Body"] == 'Opcion 1_a500':
+        params = {'monto': 500, 'celular': request.form["From"][9:]}
+        adelanto = Adelanto(params, False)
+        enviar_mensaje('HXfd4772b02d108fa58ff9be5a8cbb96a5', request.form["From"][9:],
+                       content_variables=json.dumps({'1': str(adelanto.monto)}))
+        return 'Success', 200
+    elif request.form["Body"] == 'Opcion 1_n':
+        enviar_mensaje('HXfd4772b02d108fa58ff9be5a8cbb96a5', request.form["From"][9:])
+        return 'Success', 200
     else:
-        return 'success', 200
+        return 'Success', 200
 
 def opcion2():
     from main import enviar_mensaje
