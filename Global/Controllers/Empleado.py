@@ -13,8 +13,7 @@ def create_empleado():
                   'correo': request.json.get('correo'),
                   'numero_cuenta': request.json.get('numero_cuenta'),
                   'banco': request.json.get('banco'),
-                  'telefono_casa': request.json.get('telefono_casa'),
-                  'empresa': request.json.get('empresa')}
+                  'telefono_casa': request.json.get('telefono_casa')}
         empleado = Empleado(params, False)
         enviar_mensaje('HX0e1ea052cef82ac5bcb7131a9464b213', params["celular"],
                        content_variables=json.dumps({'1': empleado.nombre}))

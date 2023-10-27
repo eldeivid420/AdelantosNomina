@@ -15,7 +15,7 @@ class Empleado:
         self.numero_cuenta = None
         self.banco = None
         self.telefono_casa = None
-        self.empresa = None
+        self.empresa = 1
         self.load(params) if load else self.create(params)
 
     @classmethod
@@ -49,10 +49,10 @@ class Empleado:
         self.numero_cuenta = params['numero_cuenta']
         self.banco = params['banco']
         self.telefono_casa = params['telefono_casa']
-        if not params["empresa"]:
+        '''if not params["empresa"]:
             self.empresa = 1
         else:
-            self.empresa = params['empresa']
+            self.empresa = params['empresa']'''
 
         # Si el usuario no existe, lo creamos
         if not self.exist(params):
