@@ -88,6 +88,7 @@ def subir_empleados_bulk():
         params = {"empleados": request.json.get('empleados')}
         params["empleados"] = [item for item in params["empleados"] if item]
 
+
         for i in range(len(params["empleados"])):
 
             empleado = Empleado(params["empleados"][i], False, True)
