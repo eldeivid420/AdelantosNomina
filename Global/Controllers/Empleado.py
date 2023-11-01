@@ -88,9 +88,7 @@ def subir_empleados_bulk():
         params = {"empleados": request.json.get('empleados')}
         params["empleados"] = [item for item in params["empleados"] if item]
 
-
         for i in range(len(params["empleados"])):
-
 
             empleado = Empleado(params["empleados"][i], False, True)
             if (not empleado.nombre or not empleado.celular or not empleado.direccion or not empleado.rfc or not empleado.correo

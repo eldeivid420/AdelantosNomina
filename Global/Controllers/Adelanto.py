@@ -179,7 +179,11 @@ def obtener_adelantos():
 def pagar_adelanto():
     try:
         params = {'id': request.json.get('id')}
-        return {"message":Adelanto.pagar_adelanto(params)}, 200
+        celular = Adelanto.get_celular_adelanto(params)
+        if celular:
+            from main import enviar_mensaje
+            enviar_mensaje('HX80196b9f0ea386aa268b8d61bb4f7636', celular)
+            return {"message": Adelanto.pagar_adelanto(params)}, 200
     except Exception as e:
         return {'error': str(e)}, 400
 

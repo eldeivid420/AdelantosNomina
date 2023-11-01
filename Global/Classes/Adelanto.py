@@ -97,6 +97,13 @@ class Adelanto:
             self.monto, self.fecha, self.estatus = get('''SELECT monto,fecha,estatus_adelanto FROM adelantos WHERE id = 
             %s''', (self.id,), False)
             return self
+    @classmethod
+    def get_celular_adelanto(cls, params):
+        celular = get('''select e.celular from empleados e where id = (select ea.empleado from empleados_adelantos ea 
+         join adelantos a on a.id = ea.adelanto where ea.adelanto = 11);''', (params["id"],), False)
+        if not celular:
+            raise Exception('No existe el registro')
+        return celular[0]
 
 
     @classmethod
