@@ -91,7 +91,11 @@ def subir_empleados_bulk():
 
         for i in range(len(params["empleados"])):
 
+
             empleado = Empleado(params["empleados"][i], False, True)
+            if (not empleado.nombre or not empleado.celular or not empleado.direccion or not empleado.rfc or not empleado.correo
+            or not empleado.numero_cuenta or not empleado.banco or not empleado.telefono_casa):
+                empleado.error = True
             if empleado.error:
                 errores.append({'nombre': empleado.nombre, 'celular': empleado.celular, 'direccion': empleado.direccion,
                                 'rfc': empleado.rfc, 'correo': empleado.correo, 'numero_cuenta': empleado.numero_cuenta,
