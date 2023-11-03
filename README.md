@@ -102,6 +102,13 @@ Dentro de la carpeta `/Global/Routes` tenemos las rutas disponibles.
 * El archivo `Incoming.py` es el encargado de definir y llamar los controladores necesarios para una solicitud del bot de Din Express.
 * El archivo `Operador.py` contiene las rutas disponibles para un perfil de tipo "gerente".
 
+Dentro de la carpeta `/Global/Utils` están las confifguraciones adicionales para algunas dependencias
+```
+|── Utils
+|   |── db.py
+```
+Dentro del archivo `db.py` se crea la conexión a la base de datos y se declaran los request GET y POST
+
 Dentro de la carpeta `/venv_app` tenemos el entorno de ejecución virtual del proyecto. <a name = "venv"></a>
 ```
 |── venv_app
