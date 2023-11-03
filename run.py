@@ -14,5 +14,5 @@ os.chdir(this_files_dir)
 # behind a reverse-proxy.
 serve(application, host='0.0.0.0', port=8080, url_prefix='/test')
 
-root = tk.Tk()
-root.title('Sistema Din Express')
+#root = tk.Tk()
+#root.title('Sistema Din Express')
