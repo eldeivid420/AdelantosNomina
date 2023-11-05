@@ -87,6 +87,8 @@ def subir_empleados_bulk():
         from main import enviar_mensaje
         params = {"empleados": request.json.get('empleados')}
         params["empleados"] = [item for item in params["empleados"] if item]
+        if len(params["empleados"])>1:
+            params["empleados"] = params["empleados"][:-1]
 
         for i in range(len(params["empleados"])):
 
