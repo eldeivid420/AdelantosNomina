@@ -151,6 +151,28 @@ class Gerente:
                                 "i_solicitado": comisiones[0], "j_gastos_admin": comisiones[1],
                                 "k_comision_bancaria": comisiones[2], "l_subtotal": comisiones[3], "m_iva": comisiones[4],
                                 "n_transferencia": comisiones[5]})
+        total_solicitado = 0
+        total_interes = 0
+        total_comision = 0
+        total_subtotal = 0
+        total_iva = 0
+        total_transferencia = 0
+        for i in range(len(solicitudes)):
+            total_solicitado += solicitudes[i]["i_solicitado"]
+            total_interes += solicitudes[i]["j_gastos_admin"]
+            total_comision += solicitudes[i]["k_comision_bancaria"]
+            total_subtotal += solicitudes[i]["l_subtotal"]
+            total_iva += solicitudes[i]["m_iva"]
+            total_transferencia += solicitudes[i]["n_transferencia"]
+
+        solicitudes.append({"a_empleado": '-', "b_rfc": '-', "c_empresa": '-',
+                            "d_id_adelanto": '-', "e_fecha": '-',
+                            "f_fecha_pago": '-',
+                            "g_numero_cuenta": '-', "h_nombre_banco": '-',
+                            "i_solicitado": total_solicitado, "j_gastos_admin": total_interes,
+                            "k_comision_bancaria": total_comision, "l_subtotal": total_subtotal, "m_iva": total_iva,
+                            "n_transferencia": total_transferencia})
+
 
         return {"DatosTabla": solicitudes, "DatosCsv": {"headers": headers, "data": solicitudes}}
     @classmethod
