@@ -35,24 +35,24 @@ class Adelanto:
         dates = get('''SELECT fecha FROM adelantos WHERE (id = %s) OR (id = %s)''', (adelantos[0][0], adelantos[1][0]), True)
         ultimo_periodo = Adelanto.obtener_periodo(dates[0][0])
 
-        penultimo_periodo = Adelanto.obtener_periodo(dates[1][0])
+        #penultimo_periodo = Adelanto.obtener_periodo(dates[1][0])
 
         periodo_actual = Adelanto.obtener_periodo(datetime.datetime.now())
 
-        # si los periodos son iguales, se rechaza en automatico porque hay un maximo de 2 solicitudes por periodo
+        '''# si los periodos son iguales, se rechaza en automatico porque hay un maximo de 2 solicitudes por periodo
         if ultimo_periodo == penultimo_periodo:
             return 'rechazado'
-        else:
-            ultimo_monto = get('''SELECT monto FROM adelantos WHERE id = %s''', (adelantos[0][0],), False)[0]
-            # si estamos en el mismo periodo que la solicitud anterior
-            if periodo_actual == ultimo_periodo:
-                if params["monto"] + ultimo_monto >= 1000:
-                    return 'rechazado'
-                else:
-                    return 'autorizado'
-            # si es la primera solicitud del periodo
-            elif periodo_actual != ultimo_periodo:
+        else:'''
+        ultimo_monto = get('''SELECT monto FROM adelantos WHERE id = %s''', (adelantos[0][0],), False)[0]
+        # si estamos en el mismo periodo que la solicitud anterior
+        if periodo_actual == ultimo_periodo:
+            if params["monto"] + ultimo_monto >= 1000:
+                return 'rechazado'
+            else:
                 return 'autorizado'
+        # si es la primera solicitud del periodo
+        elif periodo_actual != ultimo_periodo:
+            return 'autorizado'
 
     @classmethod
     def obtener_periodo(cls, date):
