@@ -149,3 +149,11 @@ class Adelanto:
             post('''UPDATE adelantos SET estatus_adelanto = 'pagado' WHERE id = %s''', (adelanto[0],), False)
             return 'Adelanto pagado exitosamente'
 
+    @classmethod
+    def adelantos_pendientes(cls):
+        pendientes = get('''SELECT COUNT(id) FROM adelantos WHERE estatus_adelanto = 'creado' ''', (), False)
+        if not pendientes:
+            cantidad = 0
+        else:
+            cantidad = pendientes[0]
+        return cantidad

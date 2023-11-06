@@ -3,6 +3,10 @@ from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
+import schedule
+import time
+from datetime import datetime
+from Global.Classes.Adelanto import Adelanto
 
 #Backend config
 load_dotenv()
@@ -26,6 +30,8 @@ def enviar_mensaje(content_sid, celular, content_variables=None):
         messaging_service_sid='MGf66cef393044e321c2b36af901e7bb8b',
         to='whatsapp:'+celular,
         content_variables=content_variables)
+
+#schedule.every().day.at("12:00").do(enviar_mensaje("HX4340096550f0b1ed1b38fa002fbe27f7","+5215526998823",))
 
 # Blueprints
 from Global.Routes.Incoming import GLOBAL_INCOMING_BLUEPRINT

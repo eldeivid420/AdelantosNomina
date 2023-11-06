@@ -5,6 +5,7 @@ import jwt
 import os
 import datetime
 
+
 class Gerente:
 
     def __init__(self, params, load=True):
