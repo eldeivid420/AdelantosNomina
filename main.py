@@ -4,11 +4,12 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 import schedule
+import json
 import time
 from datetime import datetime
 from Global.Classes.Adelanto import Adelanto
 
-#Backend config
+# Backend config
 load_dotenv()
 application = Flask(__name__)
 cors = CORS(application)
@@ -23,15 +24,25 @@ client = Client(account_sid, auth_token)
 def hello_there():
     return "General Kenobi", 200
 
+
 def enviar_mensaje(content_sid, celular, content_variables=None):
     client.messages.create(
         content_sid=content_sid,
         from_='whatsapp:+5215525392003',
         messaging_service_sid='MGf66cef393044e321c2b36af901e7bb8b',
-        to='whatsapp:'+celular,
+        to='whatsapp:' + celular,
         content_variables=content_variables)
 
-#schedule.every().day.at("12:00").do(enviar_mensaje("HX4340096550f0b1ed1b38fa002fbe27f7","+5215526998823",))
+
+'''schedule.every().day.at("12:00").do(enviar_mensaje("HX4340096550f0b1ed1b38fa002fbe27f7", "+5215526998823",
+                                                   content_variables=json.dumps(
+                                                       {'1': str(Adelanto.adelantos_pendientes())})))
+
+schedule.every().day.at("15:00").do(enviar_mensaje("HX4340096550f0b1ed1b38fa002fbe27f7", "+5215526998823",
+                                                   content_variables=json.dumps(
+                                                       {'1': str(Adelanto.adelantos_pendientes())})))'''
+
+
 
 # Blueprints
 from Global.Routes.Incoming import GLOBAL_INCOMING_BLUEPRINT
@@ -48,7 +59,6 @@ print('\n\nNO cierre esta ventana.')
 '''from Global.Routes.Inicio import GLOBAL_INICIO_BLUEPRINT
 application.register_blueprint(GLOBAL_INICIO_BLUEPRINT, url_prefix='/inicio')'''
 
-
 if __name__ == "__main__":
-    application.run(host="0.0.0.0", debug=True, port = os.environ.get('FLASK_PORT'))
-#print(message.sid)
+    application.run(host="0.0.0.0", debug=True, port=os.environ.get('FLASK_PORT'))
+# print(message.sid)
