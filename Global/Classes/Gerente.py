@@ -169,9 +169,9 @@ class Gerente:
                             "d_id_adelanto": '-', "e_fecha": '-',
                             "f_fecha_pago": '-',
                             "g_numero_cuenta": '-', "h_nombre_banco": '-',
-                            "i_solicitado": total_solicitado, "j_gastos_admin": total_interes,
-                            "k_comision_bancaria": total_comision, "l_subtotal": total_subtotal, "m_iva": total_iva,
-                            "n_transferencia": total_transferencia})
+                            "i_solicitado": round(total_solicitado,2), "j_gastos_admin": round(total_interes,2),
+                            "k_comision_bancaria": round(total_comision,2), "l_subtotal": round(total_subtotal,2),
+                            "m_iva": round(total_iva, 2), "n_transferencia": round(total_transferencia, 2)})
 
 
         return {"DatosTabla": solicitudes, "DatosCsv": {"headers": headers, "data": solicitudes}}
