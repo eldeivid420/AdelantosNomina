@@ -32,7 +32,8 @@ class Adelanto:
             else:
                 return 'autorizado'
 
-        dates = get('''SELECT fecha FROM adelantos WHERE (id = %s) OR (id = %s)''', (adelantos[0][0], adelantos[1][0]), True)
+        dates = get('''SELECT fecha FROM adelantos WHERE (id = %s) OR (id = %s) ORDER BY fecha desc''', (adelantos[0][0], adelantos[1][0]), True)
+
         ultimo_periodo = Adelanto.obtener_periodo(dates[0][0])
 
         #penultimo_periodo = Adelanto.obtener_periodo(dates[1][0])
