@@ -131,11 +131,12 @@ class Gerente:
             fecha_inicio = params["fechas"][0]
             fecha_fin = params["fechas"][1]
             if primero:
-                query += f"where TO_CHAR(t3.fecha,'DD/MM/YYYY')  between '{fecha_inicio}' and '{fecha_fin}' "
+                query += f"where TO_CHAR(t3.fecha,'DD/MM/YYYY')::date  between '{fecha_inicio}'::date and '{fecha_fin}'::date "
             elif not primero:
-                query += f"and TO_CHAR(t3.fecha,'DD/MM/YYYY')  between '{fecha_inicio}' and '{fecha_fin}' "
+                query += f"and TO_CHAR(t3.fecha,'DD/MM/YYYY')::date  between '{fecha_inicio}'::date and '{fecha_fin}'::date "
 
         query += f"order by t3.fecha desc"
+        print(query)
 
         registro = get(query, (), True)
 
