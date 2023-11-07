@@ -3,11 +3,10 @@ from flask import Flask
 from flask_cors import CORS
 from dotenv import load_dotenv
 import os
-import schedule
+from apscheduler.schedulers.background import BackgroundScheduler
 import json
-import time
-from datetime import datetime
 from Global.Classes.Adelanto import Adelanto
+
 
 # Backend config
 load_dotenv()
@@ -33,15 +32,18 @@ def enviar_mensaje(content_sid, celular, content_variables=None):
         to='whatsapp:' + celular,
         content_variables=content_variables)
 
+def test():
+    print("AAAAAAAAAAAAAAAAAAA")
 
-'''schedule.every().day.at("12:00").do(enviar_mensaje("HX4340096550f0b1ed1b38fa002fbe27f7", "+5215526998823",
-                                                   content_variables=json.dumps(
-                                                       {'1': str(Adelanto.adelantos_pendientes())})))
+def enviar_notificacion():
+    enviar_mensaje("HX4340096550f0b1ed1b38fa002fbe27f7", "+5215526998823",
+                   content_variables=json.dumps({'1': str(Adelanto.adelantos_pendientes())}))
 
-schedule.every().day.at("15:00").do(enviar_mensaje("HX4340096550f0b1ed1b38fa002fbe27f7", "+5215526998823",
-                                                   content_variables=json.dumps(
-                                                       {'1': str(Adelanto.adelantos_pendientes())})))'''
-
+scheduler = BackgroundScheduler()
+scheduler.add_job(enviar_notificacion, trigger='cron', hour=12)
+scheduler.add_job(enviar_notificacion, trigger='cron', hour=15)
+scheduler.add_job(test, trigger='interval', seconds=5)
+scheduler.start()
 
 
 # Blueprints
@@ -60,5 +62,5 @@ print('\n\nNO cierre esta ventana.')
 application.register_blueprint(GLOBAL_INICIO_BLUEPRINT, url_prefix='/inicio')'''
 
 if __name__ == "__main__":
-    application.run(host="0.0.0.0", debug=True, port=os.environ.get('FLASK_PORT'))
+    application.run(host="0.0.0.0", debug=True, port=os.environ.get('FLASK_PORT'), use_reloader=False)
 # print(message.sid)
