@@ -150,7 +150,7 @@ class Adelanto:
         if not adelanto:
             raise Exception('No hay adelantos con el id proporcionado')
         else:
-            post('''UPDATE adelantos SET estatus_adelanto = 'pagado' WHERE id = %s''', (adelanto[0],), False)
+            post('''UPDATE adelantos SET estatus_adelanto = 'pagado', fecha_pago = NOW() WHERE id = %s''', (adelanto[0],), False)
             return 'Adelanto pagado exitosamente'
 
     @classmethod

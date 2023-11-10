@@ -182,8 +182,9 @@ def pagar_adelanto():
         celular = Adelanto.get_celular_adelanto(params)
         if celular:
             from main import enviar_mensaje
+            msg =  Adelanto.pagar_adelanto(params)
             enviar_mensaje('HX2a03cf641effba08d1e399e9ed1aef13', celular)
-            return {"message": Adelanto.pagar_adelanto(params)}, 200
+            return {"message": msg}, 200
     except Exception as e:
         return {'error': str(e)}, 400
 
