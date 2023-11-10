@@ -32,8 +32,7 @@ def enviar_mensaje(content_sid, celular, content_variables=None):
         to='whatsapp:' + celular,
         content_variables=content_variables)
 
-def test():
-    print("AAAAAAAAAAAAAAAAAAA")
+
 
 def enviar_notificacion():
     enviar_mensaje("HX4340096550f0b1ed1b38fa002fbe27f7", "+5215526998823",
@@ -42,7 +41,6 @@ def enviar_notificacion():
 scheduler = BackgroundScheduler()
 scheduler.add_job(enviar_notificacion, trigger='cron', hour=12)
 scheduler.add_job(enviar_notificacion, trigger='cron', hour=15)
-scheduler.add_job(test, trigger='interval', seconds=5)
 scheduler.start()
 
 
