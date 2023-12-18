@@ -43,7 +43,7 @@ def opcion1():
         valido = Adelanto.validate_adelanto(params)
         if valido == 'autorizado':
             enviar_mensaje('HXd9dce63775be2c311a1d89920b4806dc', request.form["From"][9:],
-                           content_variables=json.dumps({'1': str(1000), '2': str(60), '3': str(10.53), '4': str(923.67)}))
+                           content_variables=json.dumps({'1': str(1000), '2': str(60), '3': str(10.53), '4': str(1076.33)}))
         elif valido == 'rechazado':
             enviar_mensaje('HX8d026a1612ec6b339e46410d50a1a2be', request.form["From"][9:])
         return 'Success', 200
@@ -54,7 +54,7 @@ def opcion1():
         if valido == 'autorizado':
             enviar_mensaje('HX7058906d8b763f6ffaa7e1c5560f5e89', request.form["From"][9:],
                            content_variables=json.dumps(
-                               {'1': str(500), '2': str(40), '3': str(7.33), '4': str(446.87)}))
+                               {'1': str(500), '2': str(40), '3': str(7.33), '4': str(553.13)}))
         elif valido == 'rechazado':
             enviar_mensaje('HX8d026a1612ec6b339e46410d50a1a2be', request.form["From"][9:])
         return 'Success', 200

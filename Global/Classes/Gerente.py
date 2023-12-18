@@ -189,6 +189,7 @@ class Gerente:
             gastos_admin = 0.00
         subtotal = round(gastos_admin + comision_bancaria, 2)
         iva = round(subtotal*0.16, 2)
-        transferecia = round(solicitado-(subtotal+iva), 2)
+        #transferecia = round(solicitado-(subtotal+iva), 2)
+        transferecia = solicitado
         comisiones = [solicitado, gastos_admin, comision_bancaria, subtotal, iva, transferecia]
         return comisiones
