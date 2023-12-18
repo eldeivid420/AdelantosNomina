@@ -37,6 +37,8 @@ def enviar_mensaje(content_sid, celular, content_variables=None):
 def enviar_notificacion():
     enviar_mensaje("HX4340096550f0b1ed1b38fa002fbe27f7", "+5215526998823",
                    content_variables=json.dumps({'1': str(Adelanto.adelantos_pendientes())}))
+    enviar_mensaje("HX4340096550f0b1ed1b38fa002fbe27f7", "+5216864303875",
+                   content_variables=json.dumps({'1': str(Adelanto.adelantos_pendientes())}))
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(enviar_notificacion, trigger='cron', hour=12)
