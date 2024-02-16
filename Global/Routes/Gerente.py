@@ -44,6 +44,10 @@ def obtener_adelantos():
 def pagar_adelanto():
     return a.pagar_adelanto()
 
+@GLOBAL_GERENTE_BLUEPRINT.route('/cancelar-adelanto', methods=['POST'])
+def cancelar_adelanto():
+    return a.cancelar_solicitud()
+
 @GLOBAL_GERENTE_BLUEPRINT.route('/obtener-operadores', methods=['GET'])
 def obtener_operadores():
     return o.obtener_operadores()
@@ -76,6 +80,6 @@ def edit_empleado():
 def generar_reporte():
     return g.generar_reporte()
 
-'''@GLOBAL_GERENTE_BLUEPRINT.route('/eliminar-empleado', methods=['POST'])
+@GLOBAL_GERENTE_BLUEPRINT.route('/eliminar-empleado', methods=['POST'])
 def eliminar_empleado():
-    return e.eliminar_empleado()'''
+    return e.eliminar_empleado()
